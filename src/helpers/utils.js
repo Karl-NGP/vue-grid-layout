@@ -113,9 +113,9 @@ export function compact(layout: Layout, verticalCompact: Boolean): Layout {
 export function compactItem(compareWith: Layout, l: LayoutItem, verticalCompact: boolean): LayoutItem {
   if (verticalCompact) {
     // Move the element up as far as it can go without colliding.
-    while (l.y > 0 && !getFirstCollision(compareWith, l)) {
-      l.y--;
-    }
+    //while (l.y > 0 && !getFirstCollision(compareWith, l)) {
+    //  l.y--;
+   // }
   }
 
   // Move it down, and keep moving it down if it's colliding.
@@ -238,11 +238,11 @@ export function moveElement(layout: Layout, l: LayoutItem, x: Number, y: Number,
     if (l.y > collision.y && l.y - collision.y > collision.h / 4) continue;
 
     // Don't move static items - we have to move *this* element away
-    if (collision.static) {
+   // if (collision.static) {
       layout = moveElementAwayFromCollision(layout, collision, l, isUserAction);
-    } else {
-      layout = moveElementAwayFromCollision(layout, l, collision, isUserAction);
-    }
+   // } else {
+    //  layout = moveElementAwayFromCollision(layout, l, collision, isUserAction);
+    //}
   }
 
   return layout;
