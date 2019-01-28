@@ -1376,6 +1376,18 @@ module.exports = function (it) {
 
 /***/ }),
 
+/***/ "3846":
+/***/ (function(module, exports, __webpack_require__) {
+
+// 21.2.5.3 get RegExp.prototype.flags()
+if (__webpack_require__("9e1e") && /./g.flags != 'g') __webpack_require__("86cc").f(RegExp.prototype, 'flags', {
+  configurable: true,
+  get: __webpack_require__("0bfb")
+});
+
+
+/***/ }),
+
 /***/ "38fd":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -2748,6 +2760,39 @@ var toString = {}.toString;
 module.exports = function (it) {
   return toString.call(it).slice(8, -1);
 };
+
+
+/***/ }),
+
+/***/ "6b54":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+__webpack_require__("3846");
+var anObject = __webpack_require__("cb7c");
+var $flags = __webpack_require__("0bfb");
+var DESCRIPTORS = __webpack_require__("9e1e");
+var TO_STRING = 'toString';
+var $toString = /./[TO_STRING];
+
+var define = function (fn) {
+  __webpack_require__("2aba")(RegExp.prototype, TO_STRING, fn, true);
+};
+
+// 21.2.5.14 RegExp.prototype.toString()
+if (__webpack_require__("79e5")(function () { return $toString.call({ source: 'a', flags: 'b' }) != '/a/b'; })) {
+  define(function toString() {
+    var R = anObject(this);
+    return '/'.concat(R.source, '/',
+      'flags' in R ? R.flags : !DESCRIPTORS && R instanceof RegExp ? $flags.call(R) : undefined);
+  });
+// FF44- RegExp#toString has a wrong name
+} else if ($toString.name != TO_STRING) {
+  define(function toString() {
+    return $toString.call(this);
+  });
+}
 
 
 /***/ }),
@@ -5420,12 +5465,15 @@ var web_dom_iterable = __webpack_require__("ac6a");
 var external_commonjs_vue_commonjs2_vue_root_Vue_ = __webpack_require__("8bbf");
 var external_commonjs_vue_commonjs2_vue_root_Vue_default = /*#__PURE__*/__webpack_require__.n(external_commonjs_vue_commonjs2_vue_root_Vue_);
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules//.cache//vue-loader","cacheIdentifier":"ac0f68fa-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/GridItem.vue?vue&type=template&id=91fa3504&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules//.cache//vue-loader","cacheIdentifier":"ac0f68fa-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/GridItem.vue?vue&type=template&id=0fba965d&
 var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{ref:"item",staticClass:"vue-grid-item",class:{ 'vue-resizable' : _vm.resizable, 'resizing' : _vm.isResizing, 'vue-draggable-dragging' : _vm.isDragging, 'cssTransforms' : _vm.useCssTransforms, 'render-rtl' : _vm.renderRtl, 'disable-userselect': _vm.isDragging, 'no-touch': _vm.isAndroid },style:(_vm.style)},[_vm._t("default"),(_vm.resizable)?_c('span',{ref:"handle",class:_vm.resizableHandleClass}):_vm._e()],2)}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/GridItem.vue?vue&type=template&id=91fa3504&
+// CONCATENATED MODULE: ./src/components/GridItem.vue?vue&type=template&id=0fba965d&
+
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es6.regexp.to-string.js
+var es6_regexp_to_string = __webpack_require__("6b54");
 
 // EXTERNAL MODULE: ./node_modules/@babel/runtime-corejs2/core-js/parse-int.js
 var parse_int = __webpack_require__("e814");
@@ -5870,7 +5918,10 @@ function setTransform(top, left, width, height)
     OTransform: translate,
     width: width + "px",
     height: height + "px",
-    position: 'absolute'
+    position: 'absolute',
+    border: "solid 1px red",
+    maxWidth: width + "px",
+    minWidth: width + "px"
   };
 }
 /**
@@ -6272,6 +6323,7 @@ function removeWindowEventListener(event
 
 
 
+
 //
 //
 //
@@ -6667,6 +6719,13 @@ var interact = __webpack_require__("fb3a");
   },
   methods: {
     createStyle: function createStyle() {
+      var placeholder = false;
+
+      if (this.$el.className.toString().indexOf("vue-grid-placeholder") > -1) {
+        placeholder = true;
+        console.log("placeholder");
+      }
+
       if (this.x + this.w > this.cols) {
         this.innerX = 0;
         this.innerW = this.w > this.cols ? this.cols : this.w;
@@ -6676,6 +6735,12 @@ var interact = __webpack_require__("fb3a");
       }
 
       var pos = this.calcPosition(this.innerX, this.innerY, this.innerW, this.innerH);
+
+      if (placeholder) {
+        console.log(this.innerX);
+        console.log(this.innerW);
+        console.log(pos);
+      }
 
       if (this.isDragging) {
         pos.top = this.dragging.top; //                    Add rtl support
@@ -6695,19 +6760,36 @@ var interact = __webpack_require__("fb3a");
       var style; // CSS Transforms support (default)
 
       if (this.useCssTransforms) {
-        //                    Add rtl support
+        console.log("moving"); //                    Add rtl support
+
         if (this.renderRtl) {
-          style = setTransformRtl(pos.top, pos.right, pos.width, pos.height);
+          if (this.$el.className.toString().indexOf("vue-grid-placeholder") > -1) {
+            style = setTransformRtl(pos.top, pos.right + parse_int_default()(pos.right * (15 / 100)), pos.width, pos.height); // style += "min-width" + pos.width + "px;" + "max-width" + pos.width + "px;"
+          } else {
+            style = setTransformRtl(pos.top, pos.right, pos.width, pos.height); //style += "min-width" + pos.width + "px;" + "max-width" + pos.width + "px;"
+          }
         } else {
-          style = setTransform(pos.top, pos.left, pos.width, pos.height);
+          if (this.$el.className.toString().indexOf("vue-grid-placeholder") > -1) {
+            style = setTransform(pos.top, pos.left + parse_int_default()(pos.left * (5 / 100)), pos.width, pos.height); //style += "min-width" + pos.width + "px;" + "max-width" + pos.width + "px;"
+          } else {
+            style = setTransform(pos.top, pos.left, pos.width, pos.height); //style += "min-width" + pos.width + "px;" + "max-width" + pos.width + "px;"
+          }
         }
       } else {
         // top,left (slow)
         //                    Add rtl support
         if (this.renderRtl) {
-          style = setTopRight(pos.top, pos.right, pos.width, pos.height);
+          if (this.$el.className.toString().indexOf("vue-grid-placeholder") > -1) {
+            style = setTopRight(pos.top, pos.right + parse_int_default()(pos.right * (15 / 100)), pos.width, pos.height); // style += "min-width" + pos.width + "px;" + "max-width" + pos.width + "px;";
+          } else {
+            style = setTopRight(pos.top, pos.right, pos.width, pos.height); //style += "min-width" + pos.width + "px;" + "max-width" + pos.width + "px;"
+          }
         } else {
-          style = setTopLeft(pos.top, pos.left, pos.width, pos.height);
+          if (this.$el.className.toString().indexOf("vue-grid-placeholder") > -1) {
+            style = setTopLeft(pos.top, pos.left + parse_int_default()(pos.left * (15 / 100)), pos.width, pos.height); //style += "min-width" + pos.width + "px;" + "max-width" + pos.width + "px;"
+          } else {
+            style = setTopLeft(pos.top, pos.left, pos.width, pos.height); //style += "min-width" + pos.width + "px;" + "max-width" + pos.width + "px;"
+          }
         }
       }
 
@@ -6810,6 +6892,7 @@ var interact = __webpack_require__("fb3a");
       this.eventBus.$emit("resizeEvent", event.type, this.i, this.innerX, this.innerY, pos.h, pos.w);
     },
     handleDrag: function handleDrag(event) {
+      //debugger;
       if (this.isResizing) return;
       var position = getControlPosition(event); // Get the current drag point from the event. This is used as the offset.
 
@@ -6832,12 +6915,12 @@ var interact = __webpack_require__("fb3a");
             var clientRect = event.target.getBoundingClientRect();
 
             if (this.renderRtl) {
-              newPosition.left = (clientRect.right - parentRect.right) * -1;
+              newPosition.left = (clientRect.right - parentRect.right + 5) * -1;
             } else {
-              newPosition.left = clientRect.left - parentRect.left;
+              newPosition.left = clientRect.left - parentRect.left + 5;
             }
 
-            newPosition.top = clientRect.top - parentRect.top;
+            newPosition.top = clientRect.top - parentRect.top + 5;
             this.dragging = newPosition;
             this.isDragging = true;
             break;
@@ -7215,12 +7298,12 @@ var component = normalizeComponent(
 
 component.options.__file = "GridItem.vue"
 /* harmony default export */ var GridItem = (component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules//.cache//vue-loader","cacheIdentifier":"ac0f68fa-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/GridLayout.vue?vue&type=template&id=4037f05d&
-var GridLayoutvue_type_template_id_4037f05d_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{ref:"item",staticClass:"vue-grid-layout",style:(_vm.mergedStyle)},[_vm._t("default"),_c('grid-item',{directives:[{name:"show",rawName:"v-show",value:(_vm.isDragging),expression:"isDragging"}],staticClass:"vue-grid-placeholder",attrs:{"x":_vm.placeholder.x,"y":_vm.placeholder.y,"w":_vm.placeholder.w,"h":_vm.placeholder.h,"i":_vm.placeholder.i}})],2)}
-var GridLayoutvue_type_template_id_4037f05d_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules//.cache//vue-loader","cacheIdentifier":"ac0f68fa-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/GridLayout.vue?vue&type=template&id=4c478aa2&
+var GridLayoutvue_type_template_id_4c478aa2_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{ref:"item",staticClass:"vue-grid-layout",style:(_vm.mergedStyle)},[_vm._t("default"),_c('grid-item',{directives:[{name:"show",rawName:"v-show",value:(_vm.isDragging),expression:"isDragging"}],staticClass:"vue-grid-placeholder",attrs:{"id":"placeholder","x":_vm.placeholder.x,"y":_vm.placeholder.y,"w":_vm.placeholder.w,"h":_vm.placeholder.h,"i":_vm.placeholder.i}})],2)}
+var GridLayoutvue_type_template_id_4c478aa2_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/GridLayout.vue?vue&type=template&id=4037f05d&
+// CONCATENATED MODULE: ./src/components/GridLayout.vue?vue&type=template&id=4c478aa2&
 
 // CONCATENATED MODULE: ./src/helpers/responsiveUtils.js
 
@@ -7394,9 +7477,6 @@ function sortBreakpoints(breakpoints
   });
 }
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/GridLayout.vue?vue&type=script&lang=js&
-
-
-
 
 //
 //
@@ -7810,8 +7890,8 @@ var GridLayoutvue_type_style_index_0_lang_css_ = __webpack_require__("e279");
 
 var GridLayout_component = normalizeComponent(
   components_GridLayoutvue_type_script_lang_js_,
-  GridLayoutvue_type_template_id_4037f05d_render,
-  GridLayoutvue_type_template_id_4037f05d_staticRenderFns,
+  GridLayoutvue_type_template_id_4c478aa2_render,
+  GridLayoutvue_type_template_id_4c478aa2_staticRenderFns,
   false,
   null,
   null,
