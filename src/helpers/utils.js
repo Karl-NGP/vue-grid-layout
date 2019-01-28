@@ -306,7 +306,6 @@ export function setTransform(top, left, width, height): Object {
     width: width + "px",
     height: height + "px",
     position: 'absolute',
-    border: "solid 1px red",
     maxWidth: width + "px",
     minWidth: width + "px",
   };
