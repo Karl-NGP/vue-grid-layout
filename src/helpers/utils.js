@@ -305,7 +305,10 @@ export function setTransform(top, left, width, height): Object {
     OTransform: translate,
     width: width + "px",
     height: height + "px",
-    position: 'absolute'
+    position: 'absolute',
+    border: "solid 1px red",
+    maxWidth: width + "px",
+    minWidth: width + "px",
   };
 }
 /**
@@ -338,7 +341,7 @@ export function setTopLeft(top, left, width, height): Object {
         left: left + "px",
         width: width + "px",
         height: height + "px",
-        position: 'absolute'
+        position: 'absolute',
     };
 }
 /**
@@ -356,7 +359,7 @@ export function setTopRight(top, right, width, height): Object {
         right: right+ "px",
         width: width + "px",
         height: height + "px",
-        position: 'absolute'
+        position: 'absolute',
     };
 }
 
