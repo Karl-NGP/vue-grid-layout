@@ -4712,12 +4712,12 @@ var web_dom_iterable = __webpack_require__("ac6a");
 var external_commonjs_vue_commonjs2_vue_root_Vue_ = __webpack_require__("8bbf");
 var external_commonjs_vue_commonjs2_vue_root_Vue_default = /*#__PURE__*/__webpack_require__.n(external_commonjs_vue_commonjs2_vue_root_Vue_);
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules//.cache//vue-loader","cacheIdentifier":"ac0f68fa-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/GridItem.vue?vue&type=template&id=02c6a24a&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules//.cache//vue-loader","cacheIdentifier":"ac0f68fa-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/GridItem.vue?vue&type=template&id=14bf6014&
 var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{ref:"item",staticClass:"vue-grid-item",class:{ 'vue-resizable' : _vm.resizable, 'resizing' : _vm.isResizing, 'vue-draggable-dragging' : _vm.isDragging, 'cssTransforms' : _vm.useCssTransforms, 'render-rtl' : _vm.renderRtl, 'disable-userselect': _vm.isDragging, 'no-touch': _vm.isAndroid },style:(_vm.style)},[_vm._t("default"),(_vm.resizable)?_c('span',{ref:"handle",class:_vm.resizableHandleClass}):_vm._e()],2)}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/GridItem.vue?vue&type=template&id=02c6a24a&
+// CONCATENATED MODULE: ./src/components/GridItem.vue?vue&type=template&id=14bf6014&
 
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es6.regexp.to-string.js
@@ -5144,7 +5144,7 @@ function perc(num
 {
   return num * 100 + '%';
 }
-function setTransform(top, left, width, height)
+function setTransform(top, left, width, height, originalWidth)
 /*: Object*/
 {
   // Replace unitless items with px
@@ -5158,8 +5158,8 @@ function setTransform(top, left, width, height)
     width: width + "px",
     height: height + "px",
     position: 'absolute',
-    maxWidth: width + "px",
-    minWidth: width + "px"
+    maxWidth: originalWidth + "px",
+    minWidth: originalWidth + "px"
   };
 }
 /**
@@ -5172,7 +5172,7 @@ function setTransform(top, left, width, height)
  * @returns {{transform: string, WebkitTransform: string, MozTransform: string, msTransform: string, OTransform: string, width: string, height: string, position: string}}
  */
 
-function setTransformRtl(top, right, width, height)
+function setTransformRtl(top, right, width, height, originalWidth)
 /*: Object*/
 {
   // Replace unitless items with px
@@ -5185,10 +5185,12 @@ function setTransformRtl(top, right, width, height)
     OTransform: translate,
     width: width + "px",
     height: height + "px",
+    maxWidth: originalWidth + "px",
+    minWidth: originalWidth + "px",
     position: 'absolute'
   };
 }
-function setTopLeft(top, left, width, height)
+function setTopLeft(top, left, width, height, originalWidth)
 /*: Object*/
 {
   return {
@@ -5196,6 +5198,8 @@ function setTopLeft(top, left, width, height)
     left: left + "px",
     width: width + "px",
     height: height + "px",
+    maxWidth: originalWidth + "px",
+    minWidth: originalWidth + "px",
     position: 'absolute'
   };
 }
@@ -5209,7 +5213,7 @@ function setTopLeft(top, left, width, height)
  * @returns {{top: string, right: string, width: string, height: string, position: string}}
  */
 
-function setTopRight(top, right, width, height)
+function setTopRight(top, right, width, height, originalWidth)
 /*: Object*/
 {
   return {
@@ -5217,6 +5221,8 @@ function setTopRight(top, right, width, height)
     right: right + "px",
     width: width + "px",
     height: height + "px",
+    maxWidth: originalWidth + "px",
+    minWidth: originalWidth + "px",
     position: 'absolute'
   };
 }
@@ -5970,6 +5976,8 @@ var interact = __webpack_require__("fb3a");
   },
   methods: {
     createStyle: function createStyle() {
+      var calcWidth = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+
       if (this.x + this.w > this.cols) {
         this.innerX = 0;
         this.innerW = this.w > this.cols ? this.cols : this.w;
@@ -5984,7 +5992,22 @@ var interact = __webpack_require__("fb3a");
         placeholderElement = true;
       }
 
-      var pos = this.calcPosition(this.innerX, this.innerY, this.innerW, this.innerH, placeholderElement ? 0 : 0);
+      var originalWidth = 0;
+
+      if (!placeholderElement && calcWidth) {
+        originalWidth = this.$el.getAttribute("data-mw");
+        if (originalWidth != null) this.$el.setAttribute('data-mw', this.$el.clientWidth);
+      }
+
+      var pos = this.calcPosition(this.innerX, this.innerY, this.innerW, this.innerH, originalWidth, placeholderElement ? 0 : 0);
+
+      if (!placeholderElement && originalWidth == null) {
+        this.$el.setAttribute('data-mw', this.$el.clientWidth); // console.log("original Width:" + originalWidth);
+
+        this.$el.setAttribute('data-mw', originalWidth); //console.log("position Width:" + pos.width);
+      } else if (!placeholderElement && originalWidth != null) {//console.log("original Width:" + originalWidth);
+        //console.log("position Width:" + pos.width);
+      }
 
       if (this.isDragging) {
         pos.top = this.dragging.top; //                    Add rtl support
@@ -5996,8 +6019,9 @@ var interact = __webpack_require__("fb3a");
         }
       }
 
-      if (this.isResizing) {//pos.width = this.resizing.width;
-        //pos.height = this.resizing.height;
+      if (this.isResizing) {
+        pos.width = this.resizing.width;
+        pos.height = this.resizing.height;
       }
 
       var style; // CSS Transforms support (default)
@@ -6005,17 +6029,17 @@ var interact = __webpack_require__("fb3a");
       if (this.useCssTransforms) {
         //                    Add rtl support
         if (this.renderRtl) {
-          style = setTransformRtl(pos.top, pos.right, pos.width, pos.height);
+          style = setTransformRtl(pos.top, pos.right, pos.width, pos.height, originalWidth == 0 ? pos.width : originalWidth);
         } else {
-          style = setTransform(pos.top, placeholderElement ? pos.left : pos.left, pos.width, pos.height);
+          style = setTransform(pos.top, placeholderElement ? pos.left : pos.left, pos.width, pos.height, originalWidth == 0 ? pos.width : originalWidth);
         }
       } else {
         // top,left (slow)
         //                    Add rtl support
         if (this.renderRtl) {
-          style = setTopRight(pos.top, placeholderElement ? pos.right : pos.right, pos.width, pos.height);
+          style = setTopRight(pos.top, placeholderElement ? pos.right : pos.right, pos.width, pos.height, originalWidth == 0 ? pos.width : originalWidth);
         } else {
-          style = setTopLeft(pos.top, pos.left, pos.width, pos.height);
+          style = setTopLeft(pos.top, pos.left, pos.width, pos.height, originalWidth == 0 ? pos.width : originalWidth);
         }
       }
 
@@ -6217,8 +6241,8 @@ var interact = __webpack_require__("fb3a");
 
       this.eventBus.$emit("dragEvent", event.type, this.i, pos.x, pos.y, this.innerH, this.innerW);
     },
-    calcPosition: function calcPosition(x, y, w, h) {
-      var addPadding = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 0;
+    calcPosition: function calcPosition(x, y, w, h, originalWidth) {
+      var addPadding = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : 0;
       var colWidth = this.calcColWidth(); // add rtl support
 
       var out;
@@ -6231,7 +6255,9 @@ var interact = __webpack_require__("fb3a");
           // Fix this if it occurs.
           // Note we do it here rather than later because Math.round(Infinity) causes deopt
           width: w === Infinity ? w : Math.round(colWidth * w + Math.max(0, w - 1) * this.margin[0]),
-          height: h === Infinity ? h : Math.round(this.rowHeight * h + Math.max(0, h - 1) * this.margin[1])
+          height: h === Infinity ? h : Math.round(this.rowHeight * h + Math.max(0, h - 1) * this.margin[1]),
+          maxWidth: originalWidth,
+          minWidth: originalWidth
         };
       } else {
         out = {
@@ -6241,7 +6267,9 @@ var interact = __webpack_require__("fb3a");
           // Fix this if it occurs.
           // Note we do it here rather than later because Math.round(Infinity) causes deopt
           width: w === Infinity ? w : Math.round(colWidth * w + Math.max(0, w - 1) * this.margin[0]),
-          height: h === Infinity ? h : Math.round(this.rowHeight * h + Math.max(0, h - 1) * this.margin[1])
+          height: h === Infinity ? h : Math.round(this.rowHeight * h + Math.max(0, h - 1) * this.margin[1]),
+          maxWidth: originalWidth,
+          minWidth: originalWidth
         }; //console.log("calcPosition:" + out.left + "," + out.top + "," + out.width + "," + out.height);
       }
 
@@ -6311,7 +6339,7 @@ var interact = __webpack_require__("fb3a");
       }
     },
     compact: function compact() {
-      this.createStyle();
+      this.createStyle(true);
     },
     tryMakeResizable: function tryMakeResizable() {
       var self = this;
