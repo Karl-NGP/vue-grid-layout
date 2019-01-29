@@ -428,8 +428,8 @@
                     }
                 }
                 if (this.isResizing) {
-                    pos.width = this.resizing.width;
-                    pos.height = this.resizing.height;
+                    //pos.width = this.resizing.width;
+                    //pos.height = this.resizing.height;
                 }
 
                 let style;

@@ -18,7 +18,7 @@
                     :is-draggable="draggable"
                     :is-resizable="false"
                     :vertical-compact="true"
-                    :use-css-transforms="false"
+                    :use-css-transforms="true"
                     :responsive="false"
             >
                 <grid-item v-for="item in layout" :key="item.i"
