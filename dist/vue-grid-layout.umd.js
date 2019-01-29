@@ -4719,6 +4719,7 @@ var staticRenderFns = []
 
 // CONCATENATED MODULE: ./src/components/GridItem.vue?vue&type=template&id=14bf6014&
 
+
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es6.regexp.to-string.js
 var es6_regexp_to_string = __webpack_require__("6b54");
 
