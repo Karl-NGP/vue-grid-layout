@@ -294,7 +294,7 @@ export function perc(num: number): string {
   return num * 100 + '%';
 }
 
-export function setTransform(top, left, width, height): Object {
+export function setTransform(top, left, width, height, originalWidth): Object {
   // Replace unitless items with px
   const translate = "translate3d(" + left + "px," + top + "px, 0)";
   return {
@@ -306,8 +306,8 @@ export function setTransform(top, left, width, height): Object {
     width: width + "px",
     height: height + "px",
     position: 'absolute',
-    maxWidth: width + "px",
-    minWidth: width + "px",
+    maxWidth: originalWidth + "px",
+    minWidth: originalWidth + "px",
   };
 }
 /**
@@ -319,7 +319,7 @@ export function setTransform(top, left, width, height): Object {
  * @param height
  * @returns {{transform: string, WebkitTransform: string, MozTransform: string, msTransform: string, OTransform: string, width: string, height: string, position: string}}
  */
-export function setTransformRtl(top, right, width, height): Object {
+export function setTransformRtl(top, right, width, height, originalWidth): Object {
     // Replace unitless items with px
     const translate = "translate3d(" + right * -1 + "px," + top + "px, 0)";
     return {
@@ -330,16 +330,20 @@ export function setTransformRtl(top, right, width, height): Object {
         OTransform: translate,
         width: width + "px",
         height: height + "px",
+        maxWidth: originalWidth + "px",
+        minWidth: originalWidth + "px",
         position: 'absolute'
     };
 }
 
-export function setTopLeft(top, left, width, height): Object {
+export function setTopLeft(top, left, width, height, originalWidth): Object {
     return {
         top: top + "px",
         left: left + "px",
         width: width + "px",
         height: height + "px",
+        maxWidth: originalWidth + "px",
+        minWidth: originalWidth + "px",
         position: 'absolute',
     };
 }
@@ -352,12 +356,14 @@ export function setTopLeft(top, left, width, height): Object {
  * @param height
  * @returns {{top: string, right: string, width: string, height: string, position: string}}
  */
-export function setTopRight(top, right, width, height): Object {
+export function setTopRight(top, right, width, height, originalWidth): Object {
     return {
         top: top + "px",
         right: right+ "px",
         width: width + "px",
         height: height + "px",
+        maxWidth: originalWidth + "px",
+        minWidth: originalWidth + "px",
         position: 'absolute',
     };
 }

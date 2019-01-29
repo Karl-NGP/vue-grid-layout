@@ -400,7 +400,7 @@
             }
         },
         methods: {
-            createStyle: function () {
+            createStyle: function (calcWidth = false) {
                 if (this.x + this.w > this.cols) {
                     this.innerX = 0;
                     this.innerW = (this.w > this.cols) ? this.cols : this.w
@@ -416,7 +416,29 @@
                     placeholderElement = true;
                 }
 
-                let pos = this.calcPosition(this.innerX, this.innerY, this.innerW, this.innerH, placeholderElement ? 0 : 0);
+                let originalWidth = 0;
+
+                if (!placeholderElement && calcWidth)
+                {
+                    originalWidth = this.$el.getAttribute("data-mw");
+
+                    if (originalWidth != null)
+                        this.$el.setAttribute('data-mw', this.$el.clientWidth);
+                }
+
+                let pos = this.calcPosition(this.innerX, this.innerY, this.innerW, this.innerH, originalWidth, placeholderElement ? 0 : 0);
+
+                if (!placeholderElement && originalWidth == null)
+                {
+                    this.$el.setAttribute('data-mw', this.$el.clientWidth);
+
+                   // console.log("original Width:" + originalWidth);
+                    this.$el.setAttribute('data-mw', originalWidth);
+                    //console.log("position Width:" + pos.width);
+                } else if (!placeholderElement && originalWidth != null) {
+                    //console.log("original Width:" + originalWidth);
+                    //console.log("position Width:" + pos.width);
+                }
 
                 if (this.isDragging) {
                     pos.top = this.dragging.top;
@@ -428,8 +450,8 @@
                     }
                 }
                 if (this.isResizing) {
-                    //pos.width = this.resizing.width;
-                    //pos.height = this.resizing.height;
+                    pos.width = this.resizing.width;
+                    pos.height = this.resizing.height;
                 }
 
                 let style;
@@ -437,17 +459,17 @@
                 if (this.useCssTransforms) {
 //                    Add rtl support
                     if (this.renderRtl) {
-                        style = setTransformRtl(pos.top, pos.right, pos.width, pos.height);
+                        style = setTransformRtl(pos.top, pos.right, pos.width, pos.height, originalWidth == 0 ? pos.width : originalWidth);
                     } else {
-                        style = setTransform(pos.top, placeholderElement ? pos.left : pos.left, pos.width, pos.height);
+                        style = setTransform(pos.top, placeholderElement ? pos.left : pos.left, pos.width, pos.height, originalWidth == 0 ? pos.width : originalWidth);
                     }
 
                 } else { // top,left (slow)
 //                    Add rtl support
                     if (this.renderRtl) {
-                        style = setTopRight(pos.top, placeholderElement ? pos.right : pos.right, pos.width, pos.height);
+                        style = setTopRight(pos.top, placeholderElement ? pos.right : pos.right, pos.width, pos.height, originalWidth == 0 ? pos.width : originalWidth);
                     } else {
-                        style = setTopLeft(pos.top, pos.left, pos.width, pos.height);
+                        style = setTopLeft(pos.top, pos.left, pos.width, pos.height, originalWidth == 0 ? pos.width : originalWidth);
                     }
                 }
 
@@ -615,7 +637,7 @@
                 }
                 this.eventBus.$emit("dragEvent", event.type, this.i, pos.x, pos.y, this.innerH, this.innerW);
             },
-            calcPosition: function (x, y, w, h, addPadding = 0) {
+            calcPosition: function (x, y, w, h, originalWidth, addPadding = 0) {
                 
                 const colWidth = this.calcColWidth();
                 // add rtl support
@@ -628,7 +650,9 @@
                         // Fix this if it occurs.
                         // Note we do it here rather than later because Math.round(Infinity) causes deopt
                         width: w === Infinity ? w : Math.round(colWidth * w + Math.max(0, w - 1) * this.margin[0]),
-                        height: h === Infinity ? h : Math.round(this.rowHeight * h + Math.max(0, h - 1) * this.margin[1])
+                        height: h === Infinity ? h : Math.round(this.rowHeight * h + Math.max(0, h - 1) * this.margin[1]),
+                        maxWidth : originalWidth,
+                        minWidth : originalWidth
                     };
                 } else {
                     out = {
@@ -638,7 +662,9 @@
                         // Fix this if it occurs.
                         // Note we do it here rather than later because Math.round(Infinity) causes deopt
                         width: w === Infinity ? w : Math.round(colWidth * w + Math.max(0, w - 1) * this.margin[0]),
-                        height: h === Infinity ? h : Math.round(this.rowHeight * h + Math.max(0, h - 1) * this.margin[1])
+                        height: h === Infinity ? h : Math.round(this.rowHeight * h + Math.max(0, h - 1) * this.margin[1]),
+                        maxWidth : originalWidth,
+                        minWidth : originalWidth
                     };
                     //console.log("calcPosition:" + out.left + "," + out.top + "," + out.width + "," + out.height);
                 }
@@ -710,7 +736,7 @@
                 }
             },
             compact: function () {
-                this.createStyle();
+                this.createStyle(true);
             },
             tryMakeResizable: function(){
                 const self = this;
