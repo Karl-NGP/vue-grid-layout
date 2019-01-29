@@ -267,11 +267,21 @@
             },
             dragEvent: function (eventName, id, x, y, h, w) {
                 //console.log(eventName + " id=" + id + ", x=" + x + ", y=" + y);
+                ///console.log("placeholder:" + this.placeholder);
+
+                //console.log(this.placeholder.x)
+                //console.log(this.placeholder.y)
+                //console.log(this.placeholder.w)
+                //console.log(this.placeholder.h)
+
                 let l = getLayoutItem(this.layout, id);
+
                 //GetLayoutItem sometimes returns null object
                 if (l === undefined || l === null){
                     l = {x:0, y:0}
                 }
+
+
                 
                 if (eventName === "dragmove" || eventName === "dragstart") {
                     this.placeholder.i = id;
@@ -282,6 +292,7 @@
                     this.$nextTick(function() {
                         this.isDragging = true;
                     });
+                    
                     //this.$broadcast("updateWidth", this.width);
                     this.eventBus.$emit("updateWidth", this.width);
                 } else {
@@ -291,6 +302,11 @@
                 }
                 
                 // set layout element coordinates to dragged position
+
+                //console.log("x:" + x);
+                //console.log("y:" + y);
+                
+
                 l.x = x;
                 l.y = y;
                 // Move the element to the dragged location.
