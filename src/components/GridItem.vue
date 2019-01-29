@@ -316,9 +316,20 @@
                     this.interactObj = interact(this.$refs.item);
                 }
                 if (this.draggable) {
+                    var gridTarget = interact.createSnapGrid({
+                    });
+
                     const opts = {
                         ignoreFrom: this.dragIgnoreFrom,
-                        allowFrom: this.dragAllowFrom
+                        allowFrom: this.dragAllowFrom,
+                        autoScroll: true,
+                        snap: { targets: [gridTarget], offset: { x: 100, y: 100 }, range: 50 },
+                        inertia: {
+                            resistance: 100,
+                            minSpeed: 800,
+                            endSpeed: 500,
+                            smoothEndDuration: 0
+                        }
                     };
                     this.interactObj.draggable(opts);
                     /*this.interactObj.draggable({allowFrom: '.vue-draggable-handle'});*/
@@ -397,8 +408,15 @@
                   this.innerX = this.x;
                   this.innerW = this.w;
                 }
-                let pos = this.calcPosition(this.innerX, this.innerY, this.innerW, this.innerH);
 
+                let placeholderElement = false;
+
+                if (this.$el.className.toString().indexOf("placeholder") > -1)
+                {
+                    placeholderElement = true;
+                }
+
+                let pos = this.calcPosition(this.innerX, this.innerY, this.innerW, this.innerH, placeholderElement ? 0 : 0);
 
                 if (this.isDragging) {
                     pos.top = this.dragging.top;
@@ -421,17 +439,18 @@
                     if (this.renderRtl) {
                         style = setTransformRtl(pos.top, pos.right, pos.width, pos.height);
                     } else {
-                        style = setTransform(pos.top, pos.left, pos.width, pos.height);
+                        style = setTransform(pos.top, placeholderElement ? pos.left : pos.left, pos.width, pos.height);
                     }
 
                 } else { // top,left (slow)
 //                    Add rtl support
                     if (this.renderRtl) {
-                        style = setTopRight(pos.top, pos.right, pos.width, pos.height);
+                        style = setTopRight(pos.top, placeholderElement ? pos.right : pos.right, pos.width, pos.height);
                     } else {
                         style = setTopLeft(pos.top, pos.left, pos.width, pos.height);
                     }
                 }
+
                 this.style = style;
 
             },
@@ -514,6 +533,7 @@
                 this.eventBus.$emit("resizeEvent", event.type, this.i, this.innerX, this.innerY, pos.h, pos.w);
             },
             handleDrag(event) {
+                //console.log("handleDrag");
                 if (this.isResizing) return;
 
                 const position = getControlPosition(event);
@@ -595,7 +615,8 @@
                 }
                 this.eventBus.$emit("dragEvent", event.type, this.i, pos.x, pos.y, this.innerH, this.innerW);
             },
-            calcPosition: function (x, y, w, h) {
+            calcPosition: function (x, y, w, h, addPadding = 0) {
+                
                 const colWidth = this.calcColWidth();
                 // add rtl support
                 let out;
@@ -611,7 +632,7 @@
                     };
                 } else {
                     out = {
-                        left: Math.round(colWidth * x + (x + 1) * this.margin[0]),
+                        left: Math.round(colWidth * x + (x + 1) * this.margin[0] + addPadding),
                         top: Math.round(this.rowHeight * y + (y + 1) * this.margin[1]),
                         // 0 * Infinity === NaN, which causes problems with resize constriants;
                         // Fix this if it occurs.
@@ -619,6 +640,7 @@
                         width: w === Infinity ? w : Math.round(colWidth * w + Math.max(0, w - 1) * this.margin[0]),
                         height: h === Infinity ? h : Math.round(this.rowHeight * h + Math.max(0, h - 1) * this.margin[1])
                     };
+                    //console.log("calcPosition:" + out.left + "," + out.top + "," + out.width + "," + out.height);
                 }
 
 
@@ -632,6 +654,7 @@
              */
             // TODO check if this function needs change in order to support rtl.
             calcXY(top, left) {
+                //console.log("calcXY");
                 const colWidth = this.calcColWidth();
 
                 // left = colWidth * x + margin * (x + 1)
@@ -653,7 +676,7 @@
             // Helper for generating column width
             calcColWidth() {
                 const colWidth = (this.containerWidth - (this.margin[0] * (this.cols + 1))) / this.cols;
-               // console.log("### COLS=" + this.cols + " COL WIDTH=" + colWidth + " MARGIN " + this.margin[0]);
+                //console.log("### COLS=" + this.cols + " COL WIDTH=" + colWidth + " MARGIN " + this.margin[0]);
                 return colWidth;
             },
 
@@ -679,6 +702,9 @@
             },
             updateWidth: function (width, colNum) {
                 this.containerWidth = width;
+
+                //console.log("updateWidth:" + width + "," + colNum);
+
                 if (colNum !== undefined && colNum !== null) {
                     this.cols = colNum;
                 }

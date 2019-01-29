@@ -1376,6 +1376,18 @@ module.exports = function (it) {
 
 /***/ }),
 
+/***/ "3846":
+/***/ (function(module, exports, __webpack_require__) {
+
+// 21.2.5.3 get RegExp.prototype.flags()
+if (__webpack_require__("9e1e") && /./g.flags != 'g') __webpack_require__("86cc").f(RegExp.prototype, 'flags', {
+  configurable: true,
+  get: __webpack_require__("0bfb")
+});
+
+
+/***/ }),
+
 /***/ "38fd":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -2748,6 +2760,39 @@ var toString = {}.toString;
 module.exports = function (it) {
   return toString.call(it).slice(8, -1);
 };
+
+
+/***/ }),
+
+/***/ "6b54":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+__webpack_require__("3846");
+var anObject = __webpack_require__("cb7c");
+var $flags = __webpack_require__("0bfb");
+var DESCRIPTORS = __webpack_require__("9e1e");
+var TO_STRING = 'toString';
+var $toString = /./[TO_STRING];
+
+var define = function (fn) {
+  __webpack_require__("2aba")(RegExp.prototype, TO_STRING, fn, true);
+};
+
+// 21.2.5.14 RegExp.prototype.toString()
+if (__webpack_require__("79e5")(function () { return $toString.call({ source: 'a', flags: 'b' }) != '/a/b'; })) {
+  define(function toString() {
+    var R = anObject(this);
+    return '/'.concat(R.source, '/',
+      'flags' in R ? R.flags : !DESCRIPTORS && R instanceof RegExp ? $flags.call(R) : undefined);
+  });
+// FF44- RegExp#toString has a wrong name
+} else if ($toString.name != TO_STRING) {
+  define(function toString() {
+    return $toString.call(this);
+  });
+}
 
 
 /***/ }),
@@ -5420,12 +5465,15 @@ var web_dom_iterable = __webpack_require__("ac6a");
 var external_commonjs_vue_commonjs2_vue_root_Vue_ = __webpack_require__("8bbf");
 var external_commonjs_vue_commonjs2_vue_root_Vue_default = /*#__PURE__*/__webpack_require__.n(external_commonjs_vue_commonjs2_vue_root_Vue_);
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules//.cache//vue-loader","cacheIdentifier":"ac0f68fa-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/GridItem.vue?vue&type=template&id=91fa3504&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules//.cache//vue-loader","cacheIdentifier":"ac0f68fa-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/GridItem.vue?vue&type=template&id=3dd4398a&
 var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{ref:"item",staticClass:"vue-grid-item",class:{ 'vue-resizable' : _vm.resizable, 'resizing' : _vm.isResizing, 'vue-draggable-dragging' : _vm.isDragging, 'cssTransforms' : _vm.useCssTransforms, 'render-rtl' : _vm.renderRtl, 'disable-userselect': _vm.isDragging, 'no-touch': _vm.isAndroid },style:(_vm.style)},[_vm._t("default"),(_vm.resizable)?_c('span',{ref:"handle",class:_vm.resizableHandleClass}):_vm._e()],2)}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/GridItem.vue?vue&type=template&id=91fa3504&
+// CONCATENATED MODULE: ./src/components/GridItem.vue?vue&type=template&id=3dd4398a&
+
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es6.regexp.to-string.js
+var es6_regexp_to_string = __webpack_require__("6b54");
 
 // EXTERNAL MODULE: ./node_modules/@babel/runtime-corejs2/core-js/parse-int.js
 var parse_int = __webpack_require__("e814");
@@ -6274,6 +6322,7 @@ function removeWindowEventListener(event
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/GridItem.vue?vue&type=script&lang=js&
 
 
+
 //
 //
 //
@@ -6594,9 +6643,25 @@ var interact = __webpack_require__("fb3a");
       }
 
       if (this.draggable) {
+        var gridTarget = interact.createSnapGrid({});
         var opts = {
           ignoreFrom: this.dragIgnoreFrom,
-          allowFrom: this.dragAllowFrom
+          allowFrom: this.dragAllowFrom,
+          autoScroll: true,
+          snap: {
+            targets: [gridTarget],
+            offset: {
+              x: 100,
+              y: 100
+            },
+            range: 50
+          },
+          inertia: {
+            resistance: 100,
+            minSpeed: 800,
+            endSpeed: 500,
+            smoothEndDuration: 0
+          }
         };
         this.interactObj.draggable(opts);
         /*this.interactObj.draggable({allowFrom: '.vue-draggable-handle'});*/
@@ -6677,7 +6742,13 @@ var interact = __webpack_require__("fb3a");
         this.innerW = this.w;
       }
 
-      var pos = this.calcPosition(this.innerX, this.innerY, this.innerW, this.innerH);
+      var placeholderElement = false;
+
+      if (this.$el.className.toString().indexOf("placeholder") > -1) {
+        placeholderElement = true;
+      }
+
+      var pos = this.calcPosition(this.innerX, this.innerY, this.innerW, this.innerH, placeholderElement ? 0 : 0);
 
       if (this.isDragging) {
         pos.top = this.dragging.top; //                    Add rtl support
@@ -6701,13 +6772,13 @@ var interact = __webpack_require__("fb3a");
         if (this.renderRtl) {
           style = setTransformRtl(pos.top, pos.right, pos.width, pos.height);
         } else {
-          style = setTransform(pos.top, pos.left, pos.width, pos.height);
+          style = setTransform(pos.top, placeholderElement ? pos.left : pos.left, pos.width, pos.height);
         }
       } else {
         // top,left (slow)
         //                    Add rtl support
         if (this.renderRtl) {
-          style = setTopRight(pos.top, pos.right, pos.width, pos.height);
+          style = setTopRight(pos.top, placeholderElement ? pos.right : pos.right, pos.width, pos.height);
         } else {
           style = setTopLeft(pos.top, pos.left, pos.width, pos.height);
         }
@@ -6812,6 +6883,7 @@ var interact = __webpack_require__("fb3a");
       this.eventBus.$emit("resizeEvent", event.type, this.i, this.innerX, this.innerY, pos.h, pos.w);
     },
     handleDrag: function handleDrag(event) {
+      //console.log("handleDrag");
       if (this.isResizing) return;
       var position = getControlPosition(event); // Get the current drag point from the event. This is used as the offset.
 
@@ -6911,6 +6983,7 @@ var interact = __webpack_require__("fb3a");
       this.eventBus.$emit("dragEvent", event.type, this.i, pos.x, pos.y, this.innerH, this.innerW);
     },
     calcPosition: function calcPosition(x, y, w, h) {
+      var addPadding = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 0;
       var colWidth = this.calcColWidth(); // add rtl support
 
       var out;
@@ -6927,14 +7000,14 @@ var interact = __webpack_require__("fb3a");
         };
       } else {
         out = {
-          left: Math.round(colWidth * x + (x + 1) * this.margin[0]),
+          left: Math.round(colWidth * x + (x + 1) * this.margin[0] + addPadding),
           top: Math.round(this.rowHeight * y + (y + 1) * this.margin[1]),
           // 0 * Infinity === NaN, which causes problems with resize constriants;
           // Fix this if it occurs.
           // Note we do it here rather than later because Math.round(Infinity) causes deopt
           width: w === Infinity ? w : Math.round(colWidth * w + Math.max(0, w - 1) * this.margin[0]),
           height: h === Infinity ? h : Math.round(this.rowHeight * h + Math.max(0, h - 1) * this.margin[1])
-        };
+        }; //console.log("calcPosition:" + out.left + "," + out.top + "," + out.width + "," + out.height);
       }
 
       return out;
@@ -6948,6 +7021,7 @@ var interact = __webpack_require__("fb3a");
      */
     // TODO check if this function needs change in order to support rtl.
     calcXY: function calcXY(top, left) {
+      //console.log("calcXY");
       var colWidth = this.calcColWidth(); // left = colWidth * x + margin * (x + 1)
       // l = cx + m(x+1)
       // l = cx + mx + m
@@ -6968,7 +7042,7 @@ var interact = __webpack_require__("fb3a");
     },
     // Helper for generating column width
     calcColWidth: function calcColWidth() {
-      var colWidth = (this.containerWidth - this.margin[0] * (this.cols + 1)) / this.cols; // console.log("### COLS=" + this.cols + " COL WIDTH=" + colWidth + " MARGIN " + this.margin[0]);
+      var colWidth = (this.containerWidth - this.margin[0] * (this.cols + 1)) / this.cols; //console.log("### COLS=" + this.cols + " COL WIDTH=" + colWidth + " MARGIN " + this.margin[0]);
 
       return colWidth;
     },
@@ -6995,7 +7069,7 @@ var interact = __webpack_require__("fb3a");
       };
     },
     updateWidth: function updateWidth(width, colNum) {
-      this.containerWidth = width;
+      this.containerWidth = width; //console.log("updateWidth:" + width + "," + colNum);
 
       if (colNum !== undefined && colNum !== null) {
         this.cols = colNum;
@@ -7217,12 +7291,12 @@ var component = normalizeComponent(
 
 component.options.__file = "GridItem.vue"
 /* harmony default export */ var GridItem = (component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules//.cache//vue-loader","cacheIdentifier":"ac0f68fa-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/GridLayout.vue?vue&type=template&id=4037f05d&
-var GridLayoutvue_type_template_id_4037f05d_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{ref:"item",staticClass:"vue-grid-layout",style:(_vm.mergedStyle)},[_vm._t("default"),_c('grid-item',{directives:[{name:"show",rawName:"v-show",value:(_vm.isDragging),expression:"isDragging"}],staticClass:"vue-grid-placeholder",attrs:{"x":_vm.placeholder.x,"y":_vm.placeholder.y,"w":_vm.placeholder.w,"h":_vm.placeholder.h,"i":_vm.placeholder.i}})],2)}
-var GridLayoutvue_type_template_id_4037f05d_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules//.cache//vue-loader","cacheIdentifier":"ac0f68fa-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/GridLayout.vue?vue&type=template&id=bc821c00&
+var GridLayoutvue_type_template_id_bc821c00_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{ref:"item",staticClass:"vue-grid-layout",style:(_vm.mergedStyle)},[_vm._t("default"),_c('grid-item',{directives:[{name:"show",rawName:"v-show",value:(_vm.isDragging),expression:"isDragging"}],staticClass:"vue-grid-placeholder",attrs:{"x":_vm.placeholder.x,"y":_vm.placeholder.y,"w":_vm.placeholder.w,"h":_vm.placeholder.h,"i":_vm.placeholder.i}})],2)}
+var GridLayoutvue_type_template_id_bc821c00_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/GridLayout.vue?vue&type=template&id=4037f05d&
+// CONCATENATED MODULE: ./src/components/GridLayout.vue?vue&type=template&id=bc821c00&
 
 // CONCATENATED MODULE: ./src/helpers/responsiveUtils.js
 
@@ -7396,9 +7470,6 @@ function sortBreakpoints(breakpoints
   });
 }
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/GridLayout.vue?vue&type=script&lang=js&
-
-
-
 
 //
 //
@@ -7685,6 +7756,11 @@ var elementResizeDetectorMaker = __webpack_require__("eec4");
     },
     dragEvent: function dragEvent(eventName, id, x, y, h, w) {
       //console.log(eventName + " id=" + id + ", x=" + x + ", y=" + y);
+      ///console.log("placeholder:" + this.placeholder);
+      //console.log(this.placeholder.x)
+      //console.log(this.placeholder.y)
+      //console.log(this.placeholder.w)
+      //console.log(this.placeholder.h)
       var l = getLayoutItem(this.layout, id); //GetLayoutItem sometimes returns null object
 
       if (l === undefined || l === null) {
@@ -7710,6 +7786,8 @@ var elementResizeDetectorMaker = __webpack_require__("eec4");
           this.isDragging = false;
         });
       } // set layout element coordinates to dragged position
+      //console.log("x:" + x);
+      //console.log("y:" + y);
 
 
       l.x = x;
@@ -7812,8 +7890,8 @@ var GridLayoutvue_type_style_index_0_lang_css_ = __webpack_require__("e279");
 
 var GridLayout_component = normalizeComponent(
   components_GridLayoutvue_type_script_lang_js_,
-  GridLayoutvue_type_template_id_4037f05d_render,
-  GridLayoutvue_type_template_id_4037f05d_staticRenderFns,
+  GridLayoutvue_type_template_id_bc821c00_render,
+  GridLayoutvue_type_template_id_bc821c00_staticRenderFns,
   false,
   null,
   null,
