@@ -322,14 +322,21 @@
                     const opts = {
                         ignoreFrom: this.dragIgnoreFrom,
                         allowFrom: this.dragAllowFrom,
-                        autoScroll: true,
+                        autoScroll: {
+                            margin: 1000,
+                            distance: 1000,
+                            interval: 1000,
+                            speed: 900,
+                        },
                         snap: { targets: [gridTarget], offset: { x: 100, y: 100 }, range: 50 },
                         inertia: {
                             resistance: 100,
                             minSpeed: 800,
                             endSpeed: 500,
                             smoothEndDuration: 0
-                        }
+                        },
+                        squareResize: true,
+
                     };
                     this.interactObj.draggable(opts);
                     /*this.interactObj.draggable({allowFrom: '.vue-draggable-handle'});*/
@@ -341,6 +348,7 @@
                     }
                 } else {
                     this.interactObj.draggable({
+                        squareResize: true,
                         enabled: false
                     });
                 }
@@ -769,7 +777,8 @@
                                 height: maximum.height,
                                 width: maximum.width
                             }
-                        }
+                        },
+                        squareResize: false
                     };
 
                     this.interactObj.resizable(opts);

@@ -1148,6 +1148,14 @@ module.exports = Object('z').propertyIsEnumerable(0) ? Object : function (it) {
 
 /***/ }),
 
+/***/ "355d":
+/***/ (function(module, exports) {
+
+exports.f = {}.propertyIsEnumerable;
+
+
+/***/ }),
+
 /***/ "35e8":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1687,6 +1695,22 @@ function getOption(options, name, defaultValue) {
 
     return value;
 }
+
+
+/***/ }),
+
+/***/ "5176":
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__("51b6");
+
+/***/ }),
+
+/***/ "51b6":
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__("a3c3");
+module.exports = __webpack_require__("584a").Object.assign;
 
 
 /***/ }),
@@ -2492,6 +2516,56 @@ exports.f = Object.getOwnPropertyNames || function getOwnPropertyNames(O) {
 
 /***/ }),
 
+/***/ "9306":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// 19.1.2.1 Object.assign(target, source, ...)
+var getKeys = __webpack_require__("c3a1");
+var gOPS = __webpack_require__("9aa9");
+var pIE = __webpack_require__("355d");
+var toObject = __webpack_require__("241e");
+var IObject = __webpack_require__("335c");
+var $assign = Object.assign;
+
+// should work with symbols and should have deterministic property order (V8 bug)
+module.exports = !$assign || __webpack_require__("294c")(function () {
+  var A = {};
+  var B = {};
+  // eslint-disable-next-line no-undef
+  var S = Symbol();
+  var K = 'abcdefghijklmnopqrst';
+  A[S] = 7;
+  K.split('').forEach(function (k) { B[k] = k; });
+  return $assign({}, A)[S] != 7 || Object.keys($assign({}, B)).join('') != K;
+}) ? function assign(target, source) { // eslint-disable-line no-unused-vars
+  var T = toObject(target);
+  var aLen = arguments.length;
+  var index = 1;
+  var getSymbols = gOPS.f;
+  var isEnum = pIE.f;
+  while (aLen > index) {
+    var S = IObject(arguments[index++]);
+    var keys = getSymbols ? getKeys(S).concat(getSymbols(S)) : getKeys(S);
+    var length = keys.length;
+    var j = 0;
+    var key;
+    while (length > j) if (isEnum.call(S, key = keys[j++])) T[key] = S[key];
+  } return T;
+} : $assign;
+
+
+/***/ }),
+
+/***/ "9aa9":
+/***/ (function(module, exports) {
+
+exports.f = Object.getOwnPropertySymbols;
+
+
+/***/ }),
+
 /***/ "9b43":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -2609,14 +2683,13 @@ module.exports = exporter;
 
 /***/ }),
 
-/***/ "a21f":
+/***/ "a3c3":
 /***/ (function(module, exports, __webpack_require__) {
 
-var core = __webpack_require__("584a");
-var $JSON = core.JSON || (core.JSON = { stringify: JSON.stringify });
-module.exports = function stringify(it) { // eslint-disable-line no-unused-vars
-  return $JSON.stringify.apply($JSON, arguments);
-};
+// 19.1.3.1 Object.assign(target, source)
+var $export = __webpack_require__("63b6");
+
+$export($export.S + $export.F, 'Object', { assign: __webpack_require__("9306") });
 
 
 /***/ }),
@@ -4644,13 +4717,6 @@ module.exports = __webpack_require__("584a").Array.isArray;
 
 /***/ }),
 
-/***/ "f499":
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__("a21f");
-
-/***/ }),
-
 /***/ "f772":
 /***/ (function(module, exports) {
 
@@ -4703,12 +4769,12 @@ var web_dom_iterable = __webpack_require__("ac6a");
 var external_commonjs_vue_commonjs2_vue_root_Vue_ = __webpack_require__("8bbf");
 var external_commonjs_vue_commonjs2_vue_root_Vue_default = /*#__PURE__*/__webpack_require__.n(external_commonjs_vue_commonjs2_vue_root_Vue_);
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules//.cache//vue-loader","cacheIdentifier":"ac0f68fa-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/GridItem.vue?vue&type=template&id=14bf6014&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules//.cache//vue-loader","cacheIdentifier":"ac0f68fa-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/GridItem.vue?vue&type=template&id=723012e0&
 var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{ref:"item",staticClass:"vue-grid-item",class:{ 'vue-resizable' : _vm.resizable, 'resizing' : _vm.isResizing, 'vue-draggable-dragging' : _vm.isDragging, 'cssTransforms' : _vm.useCssTransforms, 'render-rtl' : _vm.renderRtl, 'disable-userselect': _vm.isDragging, 'no-touch': _vm.isAndroid },style:(_vm.style)},[_vm._t("default"),(_vm.resizable)?_c('span',{ref:"handle",class:_vm.resizableHandleClass}):_vm._e()],2)}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/GridItem.vue?vue&type=template&id=14bf6014&
+// CONCATENATED MODULE: ./src/components/GridItem.vue?vue&type=template&id=723012e0&
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es6.regexp.to-string.js
 var es6_regexp_to_string = __webpack_require__("6b54");
@@ -4730,9 +4796,9 @@ var is_array_default = /*#__PURE__*/__webpack_require__.n(is_array);
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es6.array.sort.js
 var es6_array_sort = __webpack_require__("55dd");
 
-// EXTERNAL MODULE: ./node_modules/@babel/runtime-corejs2/core-js/json/stringify.js
-var stringify = __webpack_require__("f499");
-var stringify_default = /*#__PURE__*/__webpack_require__.n(stringify);
+// EXTERNAL MODULE: ./node_modules/@babel/runtime-corejs2/core-js/object/assign.js
+var object_assign = __webpack_require__("5176");
+var assign_default = /*#__PURE__*/__webpack_require__.n(object_assign);
 
 // CONCATENATED MODULE: ./src/helpers/utils.js
 
@@ -4817,7 +4883,8 @@ function cloneLayoutItem(layoutItem
     // These can be null
     isDraggable: layoutItem.isDraggable, isResizable: layoutItem.isResizable
   };*/
-  return JSON.parse(stringify_default()(layoutItem));
+  //return JSON.parse(JSON.stringify(layoutItem));
+  return assign_default()({}, layoutItem);
 }
 /**
  * Given two layoutitems, check if they collide.
@@ -4902,7 +4969,7 @@ function compactItem(compareWith
   if (verticalCompact) {} // Move the element up as far as it can go without colliding.
   //while (l.y > 0 && !getFirstCollision(compareWith, l)) {
   //  l.y--;
-  // }
+  //}
   // Move it down, and keep moving it down if it's colliding.
 
 
@@ -5147,9 +5214,9 @@ function setTransform(top, left, width, height, originalWidth)
     OTransform: translate,
     width: width + "px",
     height: height + "px",
-    position: 'absolute',
-    maxWidth: originalWidth + "px",
-    minWidth: originalWidth + "px"
+    position: 'absolute' //maxWidth: originalWidth + "px",
+    //minWidth: originalWidth + "px",
+
   };
 }
 /**
@@ -5175,8 +5242,8 @@ function setTransformRtl(top, right, width, height, originalWidth)
     OTransform: translate,
     width: width + "px",
     height: height + "px",
-    maxWidth: originalWidth + "px",
-    minWidth: originalWidth + "px",
+    //maxWidth: originalWidth + "px",
+    //minWidth: originalWidth + "px",
     position: 'absolute'
   };
 }
@@ -5188,8 +5255,8 @@ function setTopLeft(top, left, width, height, originalWidth)
     left: left + "px",
     width: width + "px",
     height: height + "px",
-    maxWidth: originalWidth + "px",
-    minWidth: originalWidth + "px",
+    //maxWidth: originalWidth + "px",
+    //minWidth: originalWidth + "px",
     position: 'absolute'
   };
 }
@@ -5211,8 +5278,8 @@ function setTopRight(top, right, width, height, originalWidth)
     right: right + "px",
     width: width + "px",
     height: height + "px",
-    maxWidth: originalWidth + "px",
-    minWidth: originalWidth + "px",
+    //maxWidth: originalWidth + "px",
+    //minWidth: originalWidth + "px",
     position: 'absolute'
   };
 }
@@ -5879,7 +5946,12 @@ var interact = __webpack_require__("fb3a");
         var opts = {
           ignoreFrom: this.dragIgnoreFrom,
           allowFrom: this.dragAllowFrom,
-          autoScroll: true,
+          autoScroll: {
+            margin: 1000,
+            distance: 1000,
+            interval: 1000,
+            speed: 900
+          },
           snap: {
             targets: [gridTarget],
             offset: {
@@ -5893,7 +5965,8 @@ var interact = __webpack_require__("fb3a");
             minSpeed: 800,
             endSpeed: 500,
             smoothEndDuration: 0
-          }
+          },
+          squareResize: true
         };
         this.interactObj.draggable(opts);
         /*this.interactObj.draggable({allowFrom: '.vue-draggable-handle'});*/
@@ -5906,6 +5979,7 @@ var interact = __webpack_require__("fb3a");
         }
       } else {
         this.interactObj.draggable({
+          squareResize: true,
           enabled: false
         });
       }
@@ -6362,7 +6436,8 @@ var interact = __webpack_require__("fb3a");
               height: maximum.height,
               width: maximum.width
             }
-          }
+          },
+          squareResize: false
         };
         this.interactObj.resizable(opts);
 
@@ -6544,12 +6619,12 @@ var component = normalizeComponent(
 
 component.options.__file = "GridItem.vue"
 /* harmony default export */ var GridItem = (component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules//.cache//vue-loader","cacheIdentifier":"ac0f68fa-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/GridLayout.vue?vue&type=template&id=bc821c00&
-var GridLayoutvue_type_template_id_bc821c00_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{ref:"item",staticClass:"vue-grid-layout",style:(_vm.mergedStyle)},[_vm._t("default"),_c('grid-item',{directives:[{name:"show",rawName:"v-show",value:(_vm.isDragging),expression:"isDragging"}],staticClass:"vue-grid-placeholder",attrs:{"x":_vm.placeholder.x,"y":_vm.placeholder.y,"w":_vm.placeholder.w,"h":_vm.placeholder.h,"i":_vm.placeholder.i}})],2)}
-var GridLayoutvue_type_template_id_bc821c00_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules//.cache//vue-loader","cacheIdentifier":"ac0f68fa-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/GridLayout.vue?vue&type=template&id=5319e405&
+var GridLayoutvue_type_template_id_5319e405_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{ref:"item",staticClass:"vue-grid-layout",style:(_vm.mergedStyle)},[_vm._t("default"),_c('grid-item',{directives:[{name:"show",rawName:"v-show",value:(_vm.isDragging),expression:"isDragging"}],staticClass:"vue-grid-placeholder",attrs:{"x":_vm.placeholder.x,"y":_vm.placeholder.y,"w":_vm.placeholder.w,"h":_vm.placeholder.h,"i":_vm.placeholder.i}})],2)}
+var GridLayoutvue_type_template_id_5319e405_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/GridLayout.vue?vue&type=template&id=bc821c00&
+// CONCATENATED MODULE: ./src/components/GridLayout.vue?vue&type=template&id=5319e405&
 
 // CONCATENATED MODULE: ./src/helpers/responsiveUtils.js
 
@@ -6897,11 +6972,11 @@ var elementResizeDetectorMaker = __webpack_require__("eec4");
         compact(self.layout, self.verticalCompact);
         self.updateHeight();
         self.$nextTick(function () {
-          var erd = elementResizeDetectorMaker({
+          this.erd = elementResizeDetectorMaker({
             strategy: "scroll" //<- For ultra performance.
 
           });
-          erd.listenTo(self.$refs.item, function () {
+          this.erd.listenTo(self.$refs.item, function () {
             self.onWindowResize();
           });
         });
@@ -6942,27 +7017,6 @@ var elementResizeDetectorMaker = __webpack_require__("eec4");
     }
   },
   methods: {
-    onWindowLoad: function onWindowLoad() {
-      var self = this;
-
-      if (self.width === null) {
-        self.onWindowResize(); //self.width = self.$el.offsetWidth;
-
-        addWindowEventListener('resize', self.onWindowResize);
-      }
-
-      compact(self.layout, self.verticalCompact);
-      self.updateHeight();
-      self.$nextTick(function () {
-        var erd = elementResizeDetectorMaker({
-          strategy: "scroll" //<- For ultra performance.
-
-        });
-        erd.listenTo(self.$refs.item, function () {
-          self.onWindowResize();
-        });
-      });
-    },
     layoutUpdate: function layoutUpdate() {
       if (this.layout !== undefined) {
         if (this.layout.length !== this.originalLayout.length) {
@@ -7143,8 +7197,8 @@ var GridLayoutvue_type_style_index_0_lang_css_ = __webpack_require__("e279");
 
 var GridLayout_component = normalizeComponent(
   components_GridLayoutvue_type_script_lang_js_,
-  GridLayoutvue_type_template_id_bc821c00_render,
-  GridLayoutvue_type_template_id_bc821c00_staticRenderFns,
+  GridLayoutvue_type_template_id_5319e405_render,
+  GridLayoutvue_type_template_id_5319e405_staticRenderFns,
   false,
   null,
   null,

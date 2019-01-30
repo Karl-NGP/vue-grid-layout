@@ -158,10 +158,10 @@
 
                     self.updateHeight();
                     self.$nextTick(function () {
-                        const erd = elementResizeDetectorMaker({
+                        this.erd = elementResizeDetectorMaker({
                             strategy: "scroll" //<- For ultra performance.
                         });
-                        erd.listenTo(self.$refs.item, function () {
+                        this.erd.listenTo(self.$refs.item, function () {
                             self.onWindowResize();
                         });
                     });
@@ -202,26 +202,6 @@
             }
         },
         methods: {
-            onWindowLoad: function(){
-                const self = this;
-
-                if (self.width === null) {
-                    self.onWindowResize();
-                    //self.width = self.$el.offsetWidth;
-                    addWindowEventListener('resize', self.onWindowResize);
-                }
-                compact(self.layout, self.verticalCompact);
-
-                self.updateHeight();
-                self.$nextTick(function () {
-                    const erd = elementResizeDetectorMaker({
-                        strategy: "scroll" //<- For ultra performance.
-                    });
-                    erd.listenTo(self.$refs.item, function () {
-                        self.onWindowResize();
-                    });
-                });
-            },
             layoutUpdate() {
                 if (this.layout !== undefined) {
                     if (this.layout.length !== this.originalLayout.length) {
