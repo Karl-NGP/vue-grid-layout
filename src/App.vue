@@ -47,7 +47,10 @@
     //var eventBus = require('./eventBus');
 
     let testLayout = [
-        {"x":0,"y":0,"w":1,"h":1,"i":"0"}
+        {"x":0,"y":0,"w":1,"h":1,"i":"0"},
+        {"x":2,"y":0,"w":1,"h":1,"i":"2"},
+        {"x":0,"y":1,"w":2,"h":1,"i":"1"},
+        {"x":0,"y":2,"w":1,"h":1,"i":"3"}
     ];
 
     export default {
