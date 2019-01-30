@@ -323,10 +323,7 @@
                         ignoreFrom: this.dragIgnoreFrom,
                         allowFrom: this.dragAllowFrom,
                         autoScroll: {
-                            margin: 1000,
-                            distance: 1000,
-                            interval: 1000,
-                            speed: 900,
+                            speed: 1000,
                         },
                         snap: { targets: [gridTarget], offset: { x: 100, y: 100 }, range: 50 },
                         inertia: {
