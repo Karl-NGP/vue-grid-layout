@@ -4769,12 +4769,12 @@ var web_dom_iterable = __webpack_require__("ac6a");
 var external_commonjs_vue_commonjs2_vue_root_Vue_ = __webpack_require__("8bbf");
 var external_commonjs_vue_commonjs2_vue_root_Vue_default = /*#__PURE__*/__webpack_require__.n(external_commonjs_vue_commonjs2_vue_root_Vue_);
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules//.cache//vue-loader","cacheIdentifier":"ac0f68fa-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/GridItem.vue?vue&type=template&id=190422b6&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules//.cache//vue-loader","cacheIdentifier":"ac0f68fa-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/GridItem.vue?vue&type=template&id=75448c65&
 var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{ref:"item",staticClass:"vue-grid-item",class:{ 'vue-resizable' : _vm.resizable, 'resizing' : _vm.isResizing, 'vue-draggable-dragging' : _vm.isDragging, 'cssTransforms' : _vm.useCssTransforms, 'render-rtl' : _vm.renderRtl, 'disable-userselect': _vm.isDragging, 'no-touch': _vm.isAndroid },style:(_vm.style)},[_vm._t("default"),(_vm.resizable)?_c('span',{ref:"handle",class:_vm.resizableHandleClass}):_vm._e()],2)}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/GridItem.vue?vue&type=template&id=190422b6&
+// CONCATENATED MODULE: ./src/components/GridItem.vue?vue&type=template&id=75448c65&
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es6.regexp.to-string.js
 var es6_regexp_to_string = __webpack_require__("6b54");
@@ -5813,11 +5813,22 @@ var interact = __webpack_require__("fb3a");
       type: String,
       required: false,
       default: 'a, button'
+    },
+    leftRightMoveSize: {
+      type: Number,
+      required: false,
+      default: 130
+    },
+    topBottomMoveSize: {
+      type: Number,
+      required: false,
+      default: 70
     }
   },
   inject: ["eventBus"],
   data: function data() {
     return {
+      moveDirection: String,
       cols: 1,
       containerWidth: 100,
       rowHeight: 30,
@@ -6263,6 +6274,51 @@ var interact = __webpack_require__("fb3a");
 
         case "dragmove":
           {
+            var rightLeftDiff = parse_int_default()(x - this.lastX);
+
+            var bottomTopDiff = parse_int_default()(y - this.lastY);
+
+            if (rightLeftDiff > 0) {
+              this.moveDirection = "right"; //console.log("right");
+            } else if (rightLeftDiff < 0) {
+              this.moveDirection = "left"; //console.log("LEFT!?");
+            }
+
+            if (bottomTopDiff > 0) {
+              this.moveDirection = "bottom"; //console.log("bottom");
+            } else if (bottomTopDiff < 0) {
+              this.moveDirection = "top"; //console.log("TOP!?");
+            } // if (rightLeftDiff > bottomTopDiff && (rightLeftDiff > 0 || bottomTopDiff > 0))
+            // {
+            //     this.moveDirection = "left or right"
+            // } else if (bottomTopDiff > rightLeftDiff && (rightLeftDiff > 0 || bottomTopDiff > 0)) {
+            //     this.moveDirection = "top or bottom"
+            // } else {
+            //     this.moveDirection = "";
+            // }
+            // if (this.moveDirection.length > 0)
+            //     console.log(this.moveDirection);
+            // if (this.moveDirection == "left or right")
+            // {
+            //     if (this.lastX > x)
+            //     {
+            //         this.moveDirection = "left"
+            //     } else {
+            //         this.moveDirection = "right";
+            //     }
+            // } else if (this.moveDirection == "top or bottom")
+            // {
+            //     if (this.lastY > y)
+            //     {
+            //         this.moveDirection = "top";
+            //     } else {
+            //         this.moveDirection = "bottom";
+            //     }
+            // }
+            // if (this.moveDirection.length > 0)
+            //     console.log(this.moveDirection);
+
+
             var coreEvent = createCoreData(this.lastX, this.lastY, x, y); //                        Add rtl support
 
             if (this.renderRtl) {
@@ -6345,8 +6401,9 @@ var interact = __webpack_require__("fb3a");
      */
     // TODO check if this function needs change in order to support rtl.
     calcXY: function calcXY(top, left) {
-      //console.log("calcXY");
-      var colWidth = this.calcColWidth(); // left = colWidth * x + margin * (x + 1)
+      var colWidth = this.calcColWidth(); // console.log("top:" + top);
+      // console.log("left:" + left);
+      // left = colWidth * x + margin * (x + 1)
       // l = cx + m(x+1)
       // l = cx + mx + m
       // l - m = cx + mx
@@ -6354,8 +6411,16 @@ var interact = __webpack_require__("fb3a");
       // (l - m) / (c + m) = x
       // x = (left - margin) / (coldWidth + margin)
 
-      var x = Math.round((left - this.margin[0]) / (colWidth + this.margin[0]));
-      var y = Math.round((top - this.margin[1]) / (this.rowHeight + this.margin[1])); // Capping
+      var leftRightPadding = left;
+      var topBottomPadding = top;
+
+      if (this.moveDirection == "left" || this.moveDirection == "right") {
+        leftRightPadding = this.moveDirection == "right" ? left + this.leftRightMoveSize : left - this.leftRightMoveSize;
+      } else if (this.moveDirection == "top" || this.moveDirection == "bottom") topBottomPadding = this.moveDirection === "bottom" ? top + this.topBottomMoveSize : top - this.topBottomMoveSize;
+
+      var x = Math.round((leftRightPadding - this.margin[0]) / (colWidth + this.margin[0]));
+      var y = Math.round((topBottomPadding - this.margin[1]) / (this.rowHeight + this.margin[1])); //console.log(left + "," + this.margin[0] + "," + colWidth);
+      // Capping
 
       x = Math.max(Math.min(x, this.cols - this.innerW), 0);
       y = Math.max(Math.min(y, this.maxRows - this.innerH), 0);
@@ -6382,8 +6447,9 @@ var interact = __webpack_require__("fb3a");
       // ...
       // w = (width + margin) / (colWidth + margin)
 
-      var w = Math.round((width + this.margin[0]) / (colWidth + this.margin[0]));
-      var h = Math.round((height + this.margin[1]) / (this.rowHeight + this.margin[1])); // Capping
+      var w = Math.round((width + this.margin[0]) / (colWidth + 0 + this.margin[0]));
+      var h = Math.round((height + this.margin[1]) / (this.rowHeight + 0 + this.margin[1]));
+      console.log("calcWH"); // Capping
 
       w = Math.max(Math.min(w, this.cols - this.innerX), 0);
       h = Math.max(Math.min(h, this.maxRows - this.innerY), 0);
