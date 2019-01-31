@@ -167,7 +167,7 @@
                     });
                 });
 
-                addWindowEventListener("load", self.onWindowLoad.bind(this));
+                //addWindowEventListener("load", self.onWindowLoad.bind(this));
             });
         },
         watch: {
