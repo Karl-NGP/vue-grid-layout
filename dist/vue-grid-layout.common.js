@@ -4769,12 +4769,12 @@ var web_dom_iterable = __webpack_require__("ac6a");
 var external_commonjs_vue_commonjs2_vue_root_Vue_ = __webpack_require__("8bbf");
 var external_commonjs_vue_commonjs2_vue_root_Vue_default = /*#__PURE__*/__webpack_require__.n(external_commonjs_vue_commonjs2_vue_root_Vue_);
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules//.cache//vue-loader","cacheIdentifier":"ac0f68fa-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/GridItem.vue?vue&type=template&id=75448c65&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules//.cache//vue-loader","cacheIdentifier":"ac0f68fa-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/GridItem.vue?vue&type=template&id=38e9e588&
 var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{ref:"item",staticClass:"vue-grid-item",class:{ 'vue-resizable' : _vm.resizable, 'resizing' : _vm.isResizing, 'vue-draggable-dragging' : _vm.isDragging, 'cssTransforms' : _vm.useCssTransforms, 'render-rtl' : _vm.renderRtl, 'disable-userselect': _vm.isDragging, 'no-touch': _vm.isAndroid },style:(_vm.style)},[_vm._t("default"),(_vm.resizable)?_c('span',{ref:"handle",class:_vm.resizableHandleClass}):_vm._e()],2)}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/GridItem.vue?vue&type=template&id=75448c65&
+// CONCATENATED MODULE: ./src/components/GridItem.vue?vue&type=template&id=38e9e588&
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es6.regexp.to-string.js
 var es6_regexp_to_string = __webpack_require__("6b54");
@@ -5214,9 +5214,9 @@ function setTransform(top, left, width, height, originalWidth)
     OTransform: translate,
     width: width + "px",
     height: height + "px",
-    position: 'absolute' //maxWidth: originalWidth + "px",
-    //minWidth: originalWidth + "px",
-
+    position: 'absolute',
+    maxWidth: originalWidth + "px",
+    minWidth: originalWidth + "px"
   };
 }
 /**
@@ -5242,8 +5242,8 @@ function setTransformRtl(top, right, width, height, originalWidth)
     OTransform: translate,
     width: width + "px",
     height: height + "px",
-    //maxWidth: originalWidth + "px",
-    //minWidth: originalWidth + "px",
+    maxWidth: originalWidth + "px",
+    minWidth: originalWidth + "px",
     position: 'absolute'
   };
 }
@@ -5255,8 +5255,8 @@ function setTopLeft(top, left, width, height, originalWidth)
     left: left + "px",
     width: width + "px",
     height: height + "px",
-    //maxWidth: originalWidth + "px",
-    //minWidth: originalWidth + "px",
+    maxWidth: originalWidth + "px",
+    minWidth: originalWidth + "px",
     position: 'absolute'
   };
 }
@@ -5278,8 +5278,8 @@ function setTopRight(top, right, width, height, originalWidth)
     right: right + "px",
     width: width + "px",
     height: height + "px",
-    //maxWidth: originalWidth + "px",
-    //minWidth: originalWidth + "px",
+    maxWidth: originalWidth + "px",
+    minWidth: originalWidth + "px",
     position: 'absolute'
   };
 }
@@ -5828,6 +5828,7 @@ var interact = __webpack_require__("fb3a");
   inject: ["eventBus"],
   data: function data() {
     return {
+      counter: 0,
       moveDirection: String,
       cols: 1,
       containerWidth: 100,
@@ -5939,7 +5940,7 @@ var interact = __webpack_require__("fb3a");
     }
 
     this.useCssTransforms = this.$parent.useCssTransforms;
-    this.createStyle();
+    this.createStyle(1);
   },
   watch: {
     isDraggable: function isDraggable() {
@@ -6007,7 +6008,8 @@ var interact = __webpack_require__("fb3a");
     },
     containerWidth: function containerWidth() {
       this.tryMakeResizable();
-      this.createStyle();
+      this.createStyle(this.counter);
+      this.counter = 4;
     },
     x: function x(newVal) {
       this.innerX = newVal;
@@ -6048,7 +6050,7 @@ var interact = __webpack_require__("fb3a");
   },
   methods: {
     createStyle: function createStyle() {
-      var calcWidth = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+      var val = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : -1;
 
       if (this.x + this.w > this.cols) {
         this.innerX = 0;
@@ -6062,23 +6064,19 @@ var interact = __webpack_require__("fb3a");
 
       if (this.$el.className.toString().indexOf("placeholder") > -1) {
         placeholderElement = true;
-      }
+      } //console.log(val);
 
-      var originalWidth = 0;
-
-      if (!placeholderElement && calcWidth) {
-        originalWidth = this.$el.getAttribute("data-mw");
-        if (originalWidth != null) this.$el.setAttribute('data-mw', this.$el.clientWidth);
-      }
 
       var pos = this.calcPosition(this.innerX, this.innerY, this.innerW, this.innerH, originalWidth, placeholderElement ? 0 : 0);
+      var originalWidth = 0;
 
-      if (!placeholderElement && originalWidth == null) {
-        this.$el.setAttribute('data-mw', this.$el.clientWidth); // console.log("original Width:" + originalWidth);
+      if (val == 4 && !placeholderElement) {
+        //console.log(pos);
+        originalWidth = this.$el.getAttribute("data-mw");
 
-        this.$el.setAttribute('data-mw', originalWidth); //console.log("position Width:" + pos.width);
-      } else if (!placeholderElement && originalWidth != null) {//console.log("original Width:" + originalWidth);
-        //console.log("position Width:" + pos.width);
+        if (originalWidth == null) {
+          this.$el.setAttribute('data-mw', pos.width);
+        }
       }
 
       if (this.isDragging) {
@@ -6101,23 +6099,24 @@ var interact = __webpack_require__("fb3a");
       if (this.useCssTransforms) {
         //                    Add rtl support
         if (this.renderRtl) {
-          style = setTransformRtl(pos.top, pos.right, pos.width, pos.height, originalWidth == 0 ? pos.width : originalWidth);
+          style = setTransformRtl(pos.top, pos.right, pos.width, pos.height, val == 4 && !placeholderElement && originalWidth > 50 ? originalWidth : pos.width);
         } else {
-          style = setTransform(pos.top, placeholderElement ? pos.left : pos.left, pos.width, pos.height, originalWidth == 0 ? pos.width : originalWidth);
+          style = setTransform(pos.top, placeholderElement ? pos.left : pos.left, pos.width, pos.height, val == 4 && !placeholderElement && originalWidth > 50 ? originalWidth : pos.width);
         }
       } else {
         // top,left (slow)
         //                    Add rtl support
         if (this.renderRtl) {
-          style = setTopRight(pos.top, placeholderElement ? pos.right : pos.right, pos.width, pos.height, originalWidth == 0 ? pos.width : originalWidth);
+          style = setTopRight(pos.top, placeholderElement ? pos.right : pos.right, pos.width, pos.height, val == 4 && !placeholderElement && originalWidth > 50 ? originalWidth : pos.width);
         } else {
-          style = setTopLeft(pos.top, pos.left, pos.width, pos.height, originalWidth == 0 ? pos.width : originalWidth);
+          style = setTopLeft(pos.top, pos.left, pos.width, pos.height, val == 4 && !placeholderElement && originalWidth > 50 ? originalWidth : pos.width);
         }
       }
 
       this.style = style;
     },
     handleResize: function handleResize(event) {
+      console.log("resize");
       var position = getControlPosition(event); // Get the current drag point from the event. This is used as the offset.
 
       if (position == null) return; // not possible but satisfies flow
@@ -6448,8 +6447,7 @@ var interact = __webpack_require__("fb3a");
       // w = (width + margin) / (colWidth + margin)
 
       var w = Math.round((width + this.margin[0]) / (colWidth + 0 + this.margin[0]));
-      var h = Math.round((height + this.margin[1]) / (this.rowHeight + 0 + this.margin[1]));
-      console.log("calcWH"); // Capping
+      var h = Math.round((height + this.margin[1]) / (this.rowHeight + 0 + this.margin[1])); // Capping
 
       w = Math.max(Math.min(w, this.cols - this.innerX), 0);
       h = Math.max(Math.min(h, this.maxRows - this.innerY), 0);
@@ -6466,7 +6464,8 @@ var interact = __webpack_require__("fb3a");
       }
     },
     compact: function compact() {
-      this.createStyle(true);
+      if (this.counter == 0) this.counter == 3;
+      this.createStyle(this.counter);
     },
     tryMakeResizable: function tryMakeResizable() {
       var self = this;

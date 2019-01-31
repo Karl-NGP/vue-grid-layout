@@ -307,8 +307,8 @@ export function setTransform(top, left, width, height, originalWidth): Object {
     width: width + "px",
     height: height + "px",
     position: 'absolute',
-    //maxWidth: originalWidth + "px",
-    //minWidth: originalWidth + "px",
+    maxWidth: originalWidth + "px",
+    minWidth: originalWidth + "px",
   };
 }
 /**
@@ -331,8 +331,8 @@ export function setTransformRtl(top, right, width, height, originalWidth): Objec
         OTransform: translate,
         width: width + "px",
         height: height + "px",
-        //maxWidth: originalWidth + "px",
-        //minWidth: originalWidth + "px",
+        maxWidth: originalWidth + "px",
+        minWidth: originalWidth + "px",
         position: 'absolute'
     };
 }
@@ -343,8 +343,8 @@ export function setTopLeft(top, left, width, height, originalWidth): Object {
         left: left + "px",
         width: width + "px",
         height: height + "px",
-        //maxWidth: originalWidth + "px",
-        //minWidth: originalWidth + "px",
+        maxWidth: originalWidth + "px",
+        minWidth: originalWidth + "px",
         position: 'absolute',
     };
 }
@@ -363,8 +363,8 @@ export function setTopRight(top, right, width, height, originalWidth): Object {
         right: right+ "px",
         width: width + "px",
         height: height + "px",
-        //maxWidth: originalWidth + "px",
-        //minWidth: originalWidth + "px",
+        maxWidth: originalWidth + "px",
+        minWidth: originalWidth + "px",
         position: 'absolute',
     };
 }
