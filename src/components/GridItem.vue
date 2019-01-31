@@ -191,10 +191,21 @@
                 required: false,
                 default: 'a, button'
             },
+            leftRightMoveSize: {
+                type: String,
+                required: false,
+                default: 130
+            },
+            topBottomMoveSize: {
+                type: String, 
+                required: false,
+                default: 70
+            }
         },
         inject: ["eventBus"],
         data: function () {
             return {
+                moveDirection: String,
                 cols: 1,
                 containerWidth: 100,
                 rowHeight: 30,
@@ -607,6 +618,62 @@
                         break;
                     }
                     case "dragmove": {
+                        
+                        let rightLeftDiff = parseInt(x - this.lastX)
+                        let bottomTopDiff = parseInt(y - this.lastY)
+
+                        if (rightLeftDiff > 0 ) {
+                            this.moveDirection = "right"
+                            //console.log("right");
+                        } else if (rightLeftDiff < 0)
+                        {
+                            this.moveDirection = "left"
+                            //console.log("LEFT!?");
+                        }
+
+
+                        if (bottomTopDiff > 0) {
+                            this.moveDirection = "bottom"
+                            //console.log("bottom");
+                        } else if (bottomTopDiff < 0)
+                        {
+                            this.moveDirection = "top"
+                            //console.log("TOP!?");
+                        }
+
+                        // if (rightLeftDiff > bottomTopDiff && (rightLeftDiff > 0 || bottomTopDiff > 0))
+                        // {
+                        //     this.moveDirection = "left or right"
+                        // } else if (bottomTopDiff > rightLeftDiff && (rightLeftDiff > 0 || bottomTopDiff > 0)) {
+                        //     this.moveDirection = "top or bottom"
+                        // } else {
+                        //     this.moveDirection = "";
+                        // }
+
+                        // if (this.moveDirection.length > 0)
+                        //     console.log(this.moveDirection);
+
+                        // if (this.moveDirection == "left or right")
+                        // {
+                        //     if (this.lastX > x)
+                        //     {
+                        //         this.moveDirection = "left"
+                        //     } else {
+                        //         this.moveDirection = "right";
+                        //     }
+                        // } else if (this.moveDirection == "top or bottom")
+                        // {
+                        //     if (this.lastY > y)
+                        //     {
+                        //         this.moveDirection = "top";
+                        //     } else {
+                        //         this.moveDirection = "bottom";
+                        //     }
+                        // }
+
+                        // if (this.moveDirection.length > 0)
+                        //     console.log(this.moveDirection);
+
                         const coreEvent = createCoreData(this.lastX, this.lastY, x, y);
 //                        Add rtl support
                         if (this.renderRtl) {
@@ -625,6 +692,7 @@
 
                 // Get new XY
                 let pos;
+
                 if (this.renderRtl) {
                     pos = this.calcXY(newPosition.top, newPosition.left);
                 } else {
@@ -685,8 +753,10 @@
              */
             // TODO check if this function needs change in order to support rtl.
             calcXY(top, left) {
-                //console.log("calcXY");
                 const colWidth = this.calcColWidth();
+
+                // console.log("top:" + top);
+                // console.log("left:" + left);
 
                 // left = colWidth * x + margin * (x + 1)
                 // l = cx + m(x+1)
@@ -695,8 +765,19 @@
                 // l - m = x(c + m)
                 // (l - m) / (c + m) = x
                 // x = (left - margin) / (coldWidth + margin)
-                let x = Math.round((left - this.margin[0]) / (colWidth + this.margin[0]));
-                let y = Math.round((top - this.margin[1]) / (this.rowHeight + this.margin[1]));
+
+                let leftRightPadding = left;
+                let topBottomPadding = top;
+
+                if (this.moveDirection == "left" || this.moveDirection == "right") {
+                    leftRightPadding = this.moveDirection == "right" ? left + this.leftRightMoveSize : left - this.leftRightMoveSize;
+                } else if (this.moveDirection == "top" || this.moveDirection == "bottom")
+                    topBottomPadding = this.moveDirection === "bottom" ? top + this.topBottomMoveSize : top - this.topBottomMoveSize;
+
+                let x = Math.round((leftRightPadding - this.margin[0]) / (colWidth + this.margin[0]))
+                let y = Math.round((topBottomPadding - this.margin[1]) / (this.rowHeight + this.margin[1]));
+
+                //console.log(left + "," + this.margin[0] + "," + colWidth);
 
                 // Capping
                 x = Math.max(Math.min(x, this.cols - this.innerW), 0);
@@ -723,9 +804,10 @@
                 // width = colWidth * w - (margin * (w - 1))
                 // ...
                 // w = (width + margin) / (colWidth + margin)
-                let w = Math.round((width + this.margin[0]) / (colWidth + this.margin[0]));
-                let h = Math.round((height + this.margin[1]) / (this.rowHeight + this.margin[1]));
+                let w = Math.round((width + this.margin[0]) / ((colWidth+0) + this.margin[0]));
+                let h = Math.round((height + this.margin[1]) / ((this.rowHeight+0) + this.margin[1]));
 
+                console.log("calcWH");
                 // Capping
                 w = Math.max(Math.min(w, this.cols - this.innerX), 0);
                 h = Math.max(Math.min(h, this.maxRows - this.innerY), 0);
