@@ -192,12 +192,12 @@
                 default: 'a, button'
             },
             leftRightMoveSize: {
-                type: String,
+                type: Number,
                 required: false,
                 default: 130
             },
             topBottomMoveSize: {
-                type: String, 
+                type: Number, 
                 required: false,
                 default: 70
             }
