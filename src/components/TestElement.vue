@@ -1,6 +1,7 @@
 <template>
     <span class="text">
-        {{text}}
+        <span>INNER CONTENT HERE</span>
+        <img src="https://via.placeholder.com/150"/>
     </span>
 </template>
 <style>

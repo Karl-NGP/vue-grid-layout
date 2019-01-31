@@ -205,6 +205,7 @@
         inject: ["eventBus"],
         data: function () {
             return {
+                counter: 0,
                 moveDirection: String,
                 cols: 1,
                 containerWidth: 100,
@@ -315,7 +316,8 @@
                 this.resizable = this.isResizable;
             }
             this.useCssTransforms = this.$parent.useCssTransforms;
-            this.createStyle();
+
+            this.createStyle(1);
         },
         watch: {
             isDraggable: function () {
@@ -376,7 +378,8 @@
             },
             containerWidth: function () {
                 this.tryMakeResizable();
-                this.createStyle();
+                this.createStyle(this.counter);
+                this.counter = 4;
             },
             x: function (newVal) {
                 this.innerX = newVal;
@@ -416,7 +419,7 @@
             }
         },
         methods: {
-            createStyle: function (calcWidth = false) {
+            createStyle: function (val = -1) {
                 if (this.x + this.w > this.cols) {
                     this.innerX = 0;
                     this.innerW = (this.w > this.cols) ? this.cols : this.w
@@ -432,28 +435,20 @@
                     placeholderElement = true;
                 }
 
-                let originalWidth = 0;
-
-                if (!placeholderElement && calcWidth)
-                {
-                    originalWidth = this.$el.getAttribute("data-mw");
-
-                    if (originalWidth != null)
-                        this.$el.setAttribute('data-mw', this.$el.clientWidth);
-                }
+                //console.log(val);
 
                 let pos = this.calcPosition(this.innerX, this.innerY, this.innerW, this.innerH, originalWidth, placeholderElement ? 0 : 0);
 
-                if (!placeholderElement && originalWidth == null)
+                let originalWidth = 0;
+                if (val == 4 && !placeholderElement)
                 {
-                    this.$el.setAttribute('data-mw', this.$el.clientWidth);
+                    //console.log(pos);
+                    originalWidth = this.$el.getAttribute("data-mw");
 
-                   // console.log("original Width:" + originalWidth);
-                    this.$el.setAttribute('data-mw', originalWidth);
-                    //console.log("position Width:" + pos.width);
-                } else if (!placeholderElement && originalWidth != null) {
-                    //console.log("original Width:" + originalWidth);
-                    //console.log("position Width:" + pos.width);
+                    if (originalWidth == null)
+                    {
+                        this.$el.setAttribute('data-mw', pos.width);
+                    }
                 }
 
                 if (this.isDragging) {
@@ -475,17 +470,17 @@
                 if (this.useCssTransforms) {
 //                    Add rtl support
                     if (this.renderRtl) {
-                        style = setTransformRtl(pos.top, pos.right, pos.width, pos.height, originalWidth == 0 ? pos.width : originalWidth);
+                        style = setTransformRtl(pos.top, pos.right, pos.width, pos.height, (val == 4 && !placeholderElement && originalWidth > 50) ? originalWidth : pos.width);
                     } else {
-                        style = setTransform(pos.top, placeholderElement ? pos.left : pos.left, pos.width, pos.height, originalWidth == 0 ? pos.width : originalWidth);
+                        style = setTransform(pos.top, placeholderElement ? pos.left : pos.left, pos.width, pos.height, (val == 4 && !placeholderElement && originalWidth > 50) ? originalWidth : pos.width);
                     }
 
                 } else { // top,left (slow)
 //                    Add rtl support
                     if (this.renderRtl) {
-                        style = setTopRight(pos.top, placeholderElement ? pos.right : pos.right, pos.width, pos.height, originalWidth == 0 ? pos.width : originalWidth);
+                        style = setTopRight(pos.top, placeholderElement ? pos.right : pos.right, pos.width, pos.height, (val == 4 && !placeholderElement && originalWidth > 50) ? originalWidth : pos.width);
                     } else {
-                        style = setTopLeft(pos.top, pos.left, pos.width, pos.height, originalWidth == 0 ? pos.width : originalWidth);
+                        style = setTopLeft(pos.top, pos.left, pos.width, pos.height, (val == 4 && !placeholderElement && originalWidth > 50) ? originalWidth : pos.width);
                     }
                 }
 
@@ -493,6 +488,7 @@
 
             },
             handleResize: function (event) {
+                console.log("resize");
                 const position = getControlPosition(event);
                 // Get the current drag point from the event. This is used as the offset.
                 if (position == null) return; // not possible but satisfies flow
@@ -807,7 +803,6 @@
                 let w = Math.round((width + this.margin[0]) / ((colWidth+0) + this.margin[0]));
                 let h = Math.round((height + this.margin[1]) / ((this.rowHeight+0) + this.margin[1]));
 
-                console.log("calcWH");
                 // Capping
                 w = Math.max(Math.min(w, this.cols - this.innerX), 0);
                 h = Math.max(Math.min(h, this.maxRows - this.innerY), 0);
@@ -823,7 +818,10 @@
                 }
             },
             compact: function () {
-                this.createStyle(true);
+                if (this.counter == 0)
+                    this.counter == 3;
+
+                this.createStyle(this.counter);
             },
             tryMakeResizable: function(){
                 const self = this;
