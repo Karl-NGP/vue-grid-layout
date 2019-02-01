@@ -4769,12 +4769,12 @@ var web_dom_iterable = __webpack_require__("ac6a");
 var external_commonjs_vue_commonjs2_vue_root_Vue_ = __webpack_require__("8bbf");
 var external_commonjs_vue_commonjs2_vue_root_Vue_default = /*#__PURE__*/__webpack_require__.n(external_commonjs_vue_commonjs2_vue_root_Vue_);
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules//.cache//vue-loader","cacheIdentifier":"ac0f68fa-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/GridItem.vue?vue&type=template&id=38e9e588&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules//.cache//vue-loader","cacheIdentifier":"ac0f68fa-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/GridItem.vue?vue&type=template&id=27fbdb29&
 var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{ref:"item",staticClass:"vue-grid-item",class:{ 'vue-resizable' : _vm.resizable, 'resizing' : _vm.isResizing, 'vue-draggable-dragging' : _vm.isDragging, 'cssTransforms' : _vm.useCssTransforms, 'render-rtl' : _vm.renderRtl, 'disable-userselect': _vm.isDragging, 'no-touch': _vm.isAndroid },style:(_vm.style)},[_vm._t("default"),(_vm.resizable)?_c('span',{ref:"handle",class:_vm.resizableHandleClass}):_vm._e()],2)}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/GridItem.vue?vue&type=template&id=38e9e588&
+// CONCATENATED MODULE: ./src/components/GridItem.vue?vue&type=template&id=27fbdb29&
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es6.regexp.to-string.js
 var es6_regexp_to_string = __webpack_require__("6b54");
@@ -5823,6 +5823,11 @@ var interact = __webpack_require__("fb3a");
       type: Number,
       required: false,
       default: 70
+    },
+    scrollDistance: {
+      type: Number,
+      required: false,
+      default: 15
     }
   },
   inject: ["eventBus"],
@@ -6278,45 +6283,26 @@ var interact = __webpack_require__("fb3a");
             var bottomTopDiff = parse_int_default()(y - this.lastY);
 
             if (rightLeftDiff > 0) {
-              this.moveDirection = "right"; //console.log("right");
+              this.moveDirection = "right";
             } else if (rightLeftDiff < 0) {
-              this.moveDirection = "left"; //console.log("LEFT!?");
+              this.moveDirection = "left";
             }
 
             if (bottomTopDiff > 0) {
-              this.moveDirection = "bottom"; //console.log("bottom");
+              this.moveDirection = "bottom";
             } else if (bottomTopDiff < 0) {
-              this.moveDirection = "top"; //console.log("TOP!?");
-            } // if (rightLeftDiff > bottomTopDiff && (rightLeftDiff > 0 || bottomTopDiff > 0))
-            // {
-            //     this.moveDirection = "left or right"
-            // } else if (bottomTopDiff > rightLeftDiff && (rightLeftDiff > 0 || bottomTopDiff > 0)) {
-            //     this.moveDirection = "top or bottom"
-            // } else {
-            //     this.moveDirection = "";
-            // }
-            // if (this.moveDirection.length > 0)
-            //     console.log(this.moveDirection);
-            // if (this.moveDirection == "left or right")
-            // {
-            //     if (this.lastX > x)
-            //     {
-            //         this.moveDirection = "left"
-            //     } else {
-            //         this.moveDirection = "right";
-            //     }
-            // } else if (this.moveDirection == "top or bottom")
-            // {
-            //     if (this.lastY > y)
-            //     {
-            //         this.moveDirection = "top";
-            //     } else {
-            //         this.moveDirection = "bottom";
-            //     }
-            // }
-            // if (this.moveDirection.length > 0)
-            //     console.log(this.moveDirection);
+              this.moveDirection = "top";
+            }
 
+            switch (this.moveDirection) {
+              case "top":
+                window.scrollBy(0, this.scrollDistance * -1);
+                break;
+
+              case "bottom":
+                window.scrollBy(0, this.scrollDistance);
+                break;
+            }
 
             var coreEvent = createCoreData(this.lastX, this.lastY, x, y); //                        Add rtl support
 

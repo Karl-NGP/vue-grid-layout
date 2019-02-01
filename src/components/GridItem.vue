@@ -200,6 +200,11 @@
                 type: Number, 
                 required: false,
                 default: 70
+            },
+            scrollDistance: {
+                type: Number,
+                required: false,
+                default: 15
             }
         },
         inject: ["eventBus"],
@@ -620,56 +625,27 @@
 
                         if (rightLeftDiff > 0 ) {
                             this.moveDirection = "right"
-                            //console.log("right");
-                        } else if (rightLeftDiff < 0)
-                        {
+                        } else if (rightLeftDiff < 0) {
                             this.moveDirection = "left"
-                            //console.log("LEFT!?");
                         }
-
 
                         if (bottomTopDiff > 0) {
                             this.moveDirection = "bottom"
-                            //console.log("bottom");
-                        } else if (bottomTopDiff < 0)
-                        {
+                            
+                        } else if (bottomTopDiff < 0) {
                             this.moveDirection = "top"
-                            //console.log("TOP!?");
                         }
 
-                        // if (rightLeftDiff > bottomTopDiff && (rightLeftDiff > 0 || bottomTopDiff > 0))
-                        // {
-                        //     this.moveDirection = "left or right"
-                        // } else if (bottomTopDiff > rightLeftDiff && (rightLeftDiff > 0 || bottomTopDiff > 0)) {
-                        //     this.moveDirection = "top or bottom"
-                        // } else {
-                        //     this.moveDirection = "";
-                        // }
-
-                        // if (this.moveDirection.length > 0)
-                        //     console.log(this.moveDirection);
-
-                        // if (this.moveDirection == "left or right")
-                        // {
-                        //     if (this.lastX > x)
-                        //     {
-                        //         this.moveDirection = "left"
-                        //     } else {
-                        //         this.moveDirection = "right";
-                        //     }
-                        // } else if (this.moveDirection == "top or bottom")
-                        // {
-                        //     if (this.lastY > y)
-                        //     {
-                        //         this.moveDirection = "top";
-                        //     } else {
-                        //         this.moveDirection = "bottom";
-                        //     }
-                        // }
-
-                        // if (this.moveDirection.length > 0)
-                        //     console.log(this.moveDirection);
-
+                        switch(this.moveDirection)
+                        {
+                            case "top":
+                                window.scrollBy(0, this.scrollDistance*-1);
+                                break;
+                            case "bottom":
+                                window.scrollBy(0, this.scrollDistance);
+                                break;
+                        }
+                        
                         const coreEvent = createCoreData(this.lastX, this.lastY, x, y);
 //                        Add rtl support
                         if (this.renderRtl) {
