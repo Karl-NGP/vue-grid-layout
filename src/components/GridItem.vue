@@ -194,22 +194,22 @@
             leftRightMoveSize: {
                 type: Number,
                 required: false,
-                default: 130
+                default: 110
             },
             topBottomMoveSize: {
                 type: Number, 
                 required: false,
-                default:70
+                default:60
             },
             scrollDistance: {
                 type: Number,
                 required: false,
-                default: 300
+                default: 200
             }, 
             scrollSpeed: {
                 type: Number,
                 required: false,
-                default: 850
+                default: 600
             }
         },
         inject: ["eventBus"],

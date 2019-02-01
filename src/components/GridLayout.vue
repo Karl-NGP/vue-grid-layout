@@ -97,6 +97,11 @@
                 type: Object,
                 default: function(){return{ lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 }},
             },
+            containerHeightSize: {
+                type: Number,
+                required: false,
+                default: 200
+            }
         },
         data: function () {
             return {
@@ -250,7 +255,7 @@
             },
             containerHeight: function () {
                 if (!this.autoSize) return;
-                return bottom(this.layout) * (this.rowHeight + this.margin[1]) + this.margin[1] + 'px';
+                return bottom(this.layout) * (this.rowHeight + this.margin[1]) + ((this.containerHeightSize * 2)+ this.margin[1]) + this.margin[1] + 'px';
             },
             dragEvent: function (eventName, id, x, y, h, w) {
                 //console.log(eventName + " id=" + id + ", x=" + x + ", y=" + y);
@@ -303,7 +308,10 @@
                 // needed because vue can't detect changes on array element properties
                 this.eventBus.$emit("compact");
                 this.updateHeight();
-                if (eventName === 'dragend') this.$emit('layout-updated', this.layout);
+                if (eventName === 'dragend') {
+                    //window.scrollTo(0, this.cursorYAxis);
+                    this.$emit('layout-updated', this.layout);
+                }
             },
             resizeEvent: function (eventName, id, x, y, h, w) {
                 if (eventName === "resizestart" || eventName === "resizemove") {
