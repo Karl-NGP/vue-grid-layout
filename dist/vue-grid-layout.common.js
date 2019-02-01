@@ -4769,12 +4769,12 @@ var web_dom_iterable = __webpack_require__("ac6a");
 var external_commonjs_vue_commonjs2_vue_root_Vue_ = __webpack_require__("8bbf");
 var external_commonjs_vue_commonjs2_vue_root_Vue_default = /*#__PURE__*/__webpack_require__.n(external_commonjs_vue_commonjs2_vue_root_Vue_);
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules//.cache//vue-loader","cacheIdentifier":"ac0f68fa-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/GridItem.vue?vue&type=template&id=27fbdb29&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules//.cache//vue-loader","cacheIdentifier":"ac0f68fa-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/GridItem.vue?vue&type=template&id=6fd4dbc2&
 var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{ref:"item",staticClass:"vue-grid-item",class:{ 'vue-resizable' : _vm.resizable, 'resizing' : _vm.isResizing, 'vue-draggable-dragging' : _vm.isDragging, 'cssTransforms' : _vm.useCssTransforms, 'render-rtl' : _vm.renderRtl, 'disable-userselect': _vm.isDragging, 'no-touch': _vm.isAndroid },style:(_vm.style)},[_vm._t("default"),(_vm.resizable)?_c('span',{ref:"handle",class:_vm.resizableHandleClass}):_vm._e()],2)}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/GridItem.vue?vue&type=template&id=27fbdb29&
+// CONCATENATED MODULE: ./src/components/GridItem.vue?vue&type=template&id=6fd4dbc2&
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es6.regexp.to-string.js
 var es6_regexp_to_string = __webpack_require__("6b54");
@@ -5827,7 +5827,12 @@ var interact = __webpack_require__("fb3a");
     scrollDistance: {
       type: Number,
       required: false,
-      default: 15
+      default: 300
+    },
+    scrollSpeed: {
+      type: Number,
+      required: false,
+      default: 850
     }
   },
   inject: ["eventBus"],
@@ -5964,7 +5969,8 @@ var interact = __webpack_require__("fb3a");
           ignoreFrom: this.dragIgnoreFrom,
           allowFrom: this.dragAllowFrom,
           autoScroll: {
-            speed: 1000
+            margin: this.scrollDistance,
+            speed: this.scrollSpeed
           },
           snap: {
             targets: [gridTarget],
@@ -6121,7 +6127,7 @@ var interact = __webpack_require__("fb3a");
       this.style = style;
     },
     handleResize: function handleResize(event) {
-      console.log("resize");
+      //console.log("resize");
       var position = getControlPosition(event); // Get the current drag point from the event. This is used as the offset.
 
       if (position == null) return; // not possible but satisfies flow
@@ -6292,17 +6298,16 @@ var interact = __webpack_require__("fb3a");
               this.moveDirection = "bottom";
             } else if (bottomTopDiff < 0) {
               this.moveDirection = "top";
-            }
+            } // switch(this.moveDirection)
+            // {
+            //     case "top":
+            //         window.scrollBy(0, this.scrollDistance*-1);
+            //         break;
+            //     case "bottom":
+            //         window.scrollBy(0, this.scrollDistance);
+            //         break;
+            // }
 
-            switch (this.moveDirection) {
-              case "top":
-                window.scrollBy(0, this.scrollDistance * -1);
-                break;
-
-              case "bottom":
-                window.scrollBy(0, this.scrollDistance);
-                break;
-            }
 
             var coreEvent = createCoreData(this.lastX, this.lastY, x, y); //                        Add rtl support
 
@@ -6316,7 +6321,14 @@ var interact = __webpack_require__("fb3a");
             //                        console.log("### drag => " + event.type + ", deltaX=" + coreEvent.deltaX + ", deltaY=" + coreEvent.deltaY);
             //                        console.log("### drag end => " + JSON.stringify(newPosition));
 
-            this.dragging = newPosition;
+            this.dragging = newPosition; //console.log("Dragging top:" + this.dragging.top + ", Scrollbar:" + document.documentElement.scrollTop);
+
+            if (newPosition.top > this.rowHeight) {//window.scrollBy(0,(newPosition.top-this.rowHeight+60));
+              //console.log("scroll by: " + (newPosition.top-this.rowHeight+60))
+              //console.log("scrolldown:" +  (this.dragging.top-(document.documentElement.scrollTop+this.rowHeight)))
+              //window.scrollBy(0,(this.dragging.top-(document.documentElement.scrollTop+this.rowHeight)))
+            }
+
             break;
           }
       } // Get new XY
@@ -6667,12 +6679,12 @@ var component = normalizeComponent(
 
 component.options.__file = "GridItem.vue"
 /* harmony default export */ var GridItem = (component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules//.cache//vue-loader","cacheIdentifier":"ac0f68fa-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/GridLayout.vue?vue&type=template&id=16287936&
-var GridLayoutvue_type_template_id_16287936_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{ref:"item",staticClass:"vue-grid-layout",style:(_vm.mergedStyle)},[_vm._t("default"),_c('grid-item',{directives:[{name:"show",rawName:"v-show",value:(_vm.isDragging),expression:"isDragging"}],staticClass:"vue-grid-placeholder",attrs:{"x":_vm.placeholder.x,"y":_vm.placeholder.y,"w":_vm.placeholder.w,"h":_vm.placeholder.h,"i":_vm.placeholder.i}})],2)}
-var GridLayoutvue_type_template_id_16287936_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules//.cache//vue-loader","cacheIdentifier":"ac0f68fa-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/GridLayout.vue?vue&type=template&id=4f9e3605&
+var GridLayoutvue_type_template_id_4f9e3605_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{ref:"item",staticClass:"vue-grid-layout",style:(_vm.mergedStyle)},[_vm._t("default"),_c('grid-item',{directives:[{name:"show",rawName:"v-show",value:(_vm.isDragging),expression:"isDragging"}],staticClass:"vue-grid-placeholder",attrs:{"x":_vm.placeholder.x,"y":_vm.placeholder.y,"w":_vm.placeholder.w,"h":_vm.placeholder.h,"i":_vm.placeholder.i}})],2)}
+var GridLayoutvue_type_template_id_4f9e3605_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/GridLayout.vue?vue&type=template&id=16287936&
+// CONCATENATED MODULE: ./src/components/GridLayout.vue?vue&type=template&id=4f9e3605&
 
 // CONCATENATED MODULE: ./src/helpers/responsiveUtils.js
 
@@ -6978,8 +6990,9 @@ var elementResizeDetectorMaker = __webpack_require__("eec4");
       // array to store all layouts from different breakpoints
       lastBreakpoint: null,
       // store last active breakpoint
-      originalLayout: null // store original Layout
-
+      originalLayout: null,
+      // store original Layout
+      cursorYAxis: 0
     };
   },
   created: function created() {
@@ -7028,7 +7041,8 @@ var elementResizeDetectorMaker = __webpack_require__("eec4");
             self.onWindowResize();
           });
         });
-      }); //addWindowEventListener("load", self.onWindowLoad.bind(this));
+      });
+      addWindowEventListener('mousemove', self.onMouseMove); //addWindowEventListener("load", self.onWindowLoad.bind(this));
     });
   },
   watch: {
@@ -7097,6 +7111,11 @@ var elementResizeDetectorMaker = __webpack_require__("eec4");
         height: this.containerHeight()
       };
     },
+    onMouseMove: function onMouseMove(event) {
+      //console.log("mouse move")
+      //console.log(event.pageY);
+      this.cursorYAxis = event.pageY;
+    },
     onWindowResize: function onWindowResize() {
       if (this.$refs !== null && this.$refs.item !== null && this.$refs.item !== undefined) {
         this.width = this.$refs.item.offsetWidth;
@@ -7142,6 +7161,9 @@ var elementResizeDetectorMaker = __webpack_require__("eec4");
       } // set layout element coordinates to dragged position
       //console.log("x:" + x);
       //console.log("y:" + y);
+      //console.log("Dragging...");
+      //console.log("Mouse:" + this.cursorYAxis);
+      //console.log("Scrollbar:" + document.documentElement.scrollTop);
 
 
       l.x = x;
@@ -7244,8 +7266,8 @@ var GridLayoutvue_type_style_index_0_lang_css_ = __webpack_require__("e279");
 
 var GridLayout_component = normalizeComponent(
   components_GridLayoutvue_type_script_lang_js_,
-  GridLayoutvue_type_template_id_16287936_render,
-  GridLayoutvue_type_template_id_16287936_staticRenderFns,
+  GridLayoutvue_type_template_id_4f9e3605_render,
+  GridLayoutvue_type_template_id_4f9e3605_staticRenderFns,
   false,
   null,
   null,
