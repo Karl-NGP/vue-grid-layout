@@ -114,6 +114,7 @@
                 layouts: {}, // array to store all layouts from different breakpoints
                 lastBreakpoint: null, // store last active breakpoint
                 originalLayout: null, // store original Layout
+                cursorYAxis: 0,
             };
         },
         created () {
@@ -167,6 +168,7 @@
                     });
                 });
 
+                addWindowEventListener('mousemove', self.onMouseMove);
                 //addWindowEventListener("load", self.onWindowLoad.bind(this));
             });
         },
@@ -235,6 +237,11 @@
                     height: this.containerHeight()
                 };
             },
+            onMouseMove: function(event) {
+                //console.log("mouse move")
+                //console.log(event.pageY);
+                this.cursorYAxis = event.pageY;
+            },
             onWindowResize: function () {
                 if (this.$refs !== null && this.$refs.item !== null && this.$refs.item !== undefined) {
                     this.width = this.$refs.item.offsetWidth;
@@ -260,8 +267,6 @@
                 if (l === undefined || l === null){
                     l = {x:0, y:0}
                 }
-
-
                 
                 if (eventName === "dragmove" || eventName === "dragstart") {
                     this.placeholder.i = id;
@@ -285,7 +290,10 @@
 
                 //console.log("x:" + x);
                 //console.log("y:" + y);
-                
+
+                //console.log("Dragging...");
+                //console.log("Mouse:" + this.cursorYAxis);
+                //console.log("Scrollbar:" + document.documentElement.scrollTop);
 
                 l.x = x;
                 l.y = y;
