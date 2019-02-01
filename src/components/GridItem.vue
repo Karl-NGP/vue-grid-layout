@@ -199,12 +199,17 @@
             topBottomMoveSize: {
                 type: Number, 
                 required: false,
-                default: 70
+                default:70
             },
             scrollDistance: {
                 type: Number,
                 required: false,
-                default: 15
+                default: 300
+            }, 
+            scrollSpeed: {
+                type: Number,
+                required: false,
+                default: 850
             }
         },
         inject: ["eventBus"],
@@ -341,7 +346,8 @@
                         ignoreFrom: this.dragIgnoreFrom,
                         allowFrom: this.dragAllowFrom,
                         autoScroll: {
-                            speed: 1000,
+                            margin: this.scrollDistance,
+                            speed: this.scrollSpeed,
                         },
                         snap: { targets: [gridTarget], offset: { x: 100, y: 100 }, range: 50 },
                         inertia: {
@@ -493,7 +499,7 @@
 
             },
             handleResize: function (event) {
-                console.log("resize");
+                //console.log("resize");
                 const position = getControlPosition(event);
                 // Get the current drag point from the event. This is used as the offset.
                 if (position == null) return; // not possible but satisfies flow
@@ -636,15 +642,15 @@
                             this.moveDirection = "top"
                         }
 
-                        switch(this.moveDirection)
-                        {
-                            case "top":
-                                window.scrollBy(0, this.scrollDistance*-1);
-                                break;
-                            case "bottom":
-                                window.scrollBy(0, this.scrollDistance);
-                                break;
-                        }
+                        // switch(this.moveDirection)
+                        // {
+                        //     case "top":
+                        //         window.scrollBy(0, this.scrollDistance*-1);
+                        //         break;
+                        //     case "bottom":
+                        //         window.scrollBy(0, this.scrollDistance);
+                        //         break;
+                        // }
                         
                         const coreEvent = createCoreData(this.lastX, this.lastY, x, y);
 //                        Add rtl support
@@ -658,6 +664,15 @@
 //                        console.log("### drag => " + event.type + ", deltaX=" + coreEvent.deltaX + ", deltaY=" + coreEvent.deltaY);
 //                        console.log("### drag end => " + JSON.stringify(newPosition));
                         this.dragging = newPosition;
+
+                        //console.log("Dragging top:" + this.dragging.top + ", Scrollbar:" + document.documentElement.scrollTop);
+
+                        if (newPosition.top > this.rowHeight) {
+                            //window.scrollBy(0,(newPosition.top-this.rowHeight+60));
+                            //console.log("scroll by: " + (newPosition.top-this.rowHeight+60))
+                            //console.log("scrolldown:" +  (this.dragging.top-(document.documentElement.scrollTop+this.rowHeight)))
+                            //window.scrollBy(0,(this.dragging.top-(document.documentElement.scrollTop+this.rowHeight)))
+                        }
                         break;
                     }
                 }
