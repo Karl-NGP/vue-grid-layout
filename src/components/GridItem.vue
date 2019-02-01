@@ -199,17 +199,7 @@
             topBottomMoveSize: {
                 type: Number, 
                 required: false,
-                default:60
-            },
-            scrollDistance: {
-                type: Number,
-                required: false,
-                default: 200
-            }, 
-            scrollSpeed: {
-                type: Number,
-                required: false,
-                default: 600
+                default: 70
             }
         },
         inject: ["eventBus"],
@@ -631,27 +621,56 @@
 
                         if (rightLeftDiff > 0 ) {
                             this.moveDirection = "right"
-                        } else if (rightLeftDiff < 0) {
+                            //console.log("right");
+                        } else if (rightLeftDiff < 0)
+                        {
                             this.moveDirection = "left"
+                            //console.log("LEFT!?");
                         }
+
 
                         if (bottomTopDiff > 0) {
                             this.moveDirection = "bottom"
-                            
-                        } else if (bottomTopDiff < 0) {
+                            //console.log("bottom");
+                        } else if (bottomTopDiff < 0)
+                        {
                             this.moveDirection = "top"
+                            //console.log("TOP!?");
                         }
 
-                        // switch(this.moveDirection)
+                        // if (rightLeftDiff > bottomTopDiff && (rightLeftDiff > 0 || bottomTopDiff > 0))
                         // {
-                        //     case "top":
-                        //         window.scrollBy(0, this.scrollDistance*-1);
-                        //         break;
-                        //     case "bottom":
-                        //         window.scrollBy(0, this.scrollDistance);
-                        //         break;
+                        //     this.moveDirection = "left or right"
+                        // } else if (bottomTopDiff > rightLeftDiff && (rightLeftDiff > 0 || bottomTopDiff > 0)) {
+                        //     this.moveDirection = "top or bottom"
+                        // } else {
+                        //     this.moveDirection = "";
                         // }
-                        
+
+                        // if (this.moveDirection.length > 0)
+                        //     console.log(this.moveDirection);
+
+                        // if (this.moveDirection == "left or right")
+                        // {
+                        //     if (this.lastX > x)
+                        //     {
+                        //         this.moveDirection = "left"
+                        //     } else {
+                        //         this.moveDirection = "right";
+                        //     }
+                        // } else if (this.moveDirection == "top or bottom")
+                        // {
+                        //     if (this.lastY > y)
+                        //     {
+                        //         this.moveDirection = "top";
+                        //     } else {
+                        //         this.moveDirection = "bottom";
+                        //     }
+                        // }
+
+                        // if (this.moveDirection.length > 0)
+                        //     console.log(this.moveDirection);
+
                         const coreEvent = createCoreData(this.lastX, this.lastY, x, y);
 //                        Add rtl support
                         if (this.renderRtl) {
