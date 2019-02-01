@@ -4769,12 +4769,12 @@ var web_dom_iterable = __webpack_require__("ac6a");
 var external_commonjs_vue_commonjs2_vue_root_Vue_ = __webpack_require__("8bbf");
 var external_commonjs_vue_commonjs2_vue_root_Vue_default = /*#__PURE__*/__webpack_require__.n(external_commonjs_vue_commonjs2_vue_root_Vue_);
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules//.cache//vue-loader","cacheIdentifier":"ac0f68fa-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/GridItem.vue?vue&type=template&id=6fd4dbc2&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules//.cache//vue-loader","cacheIdentifier":"ac0f68fa-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/GridItem.vue?vue&type=template&id=41d56a87&
 var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{ref:"item",staticClass:"vue-grid-item",class:{ 'vue-resizable' : _vm.resizable, 'resizing' : _vm.isResizing, 'vue-draggable-dragging' : _vm.isDragging, 'cssTransforms' : _vm.useCssTransforms, 'render-rtl' : _vm.renderRtl, 'disable-userselect': _vm.isDragging, 'no-touch': _vm.isAndroid },style:(_vm.style)},[_vm._t("default"),(_vm.resizable)?_c('span',{ref:"handle",class:_vm.resizableHandleClass}):_vm._e()],2)}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/GridItem.vue?vue&type=template&id=6fd4dbc2&
+// CONCATENATED MODULE: ./src/components/GridItem.vue?vue&type=template&id=41d56a87&
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es6.regexp.to-string.js
 var es6_regexp_to_string = __webpack_require__("6b54");
@@ -5817,22 +5817,22 @@ var interact = __webpack_require__("fb3a");
     leftRightMoveSize: {
       type: Number,
       required: false,
-      default: 130
+      default: 110
     },
     topBottomMoveSize: {
       type: Number,
       required: false,
-      default: 70
+      default: 60
     },
     scrollDistance: {
       type: Number,
       required: false,
-      default: 300
+      default: 200
     },
     scrollSpeed: {
       type: Number,
       required: false,
-      default: 850
+      default: 600
     }
   },
   inject: ["eventBus"],
@@ -6679,12 +6679,12 @@ var component = normalizeComponent(
 
 component.options.__file = "GridItem.vue"
 /* harmony default export */ var GridItem = (component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules//.cache//vue-loader","cacheIdentifier":"ac0f68fa-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/GridLayout.vue?vue&type=template&id=4f9e3605&
-var GridLayoutvue_type_template_id_4f9e3605_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{ref:"item",staticClass:"vue-grid-layout",style:(_vm.mergedStyle)},[_vm._t("default"),_c('grid-item',{directives:[{name:"show",rawName:"v-show",value:(_vm.isDragging),expression:"isDragging"}],staticClass:"vue-grid-placeholder",attrs:{"x":_vm.placeholder.x,"y":_vm.placeholder.y,"w":_vm.placeholder.w,"h":_vm.placeholder.h,"i":_vm.placeholder.i}})],2)}
-var GridLayoutvue_type_template_id_4f9e3605_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules//.cache//vue-loader","cacheIdentifier":"ac0f68fa-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/GridLayout.vue?vue&type=template&id=8689b44c&
+var GridLayoutvue_type_template_id_8689b44c_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{ref:"item",staticClass:"vue-grid-layout",style:(_vm.mergedStyle)},[_vm._t("default"),_c('grid-item',{directives:[{name:"show",rawName:"v-show",value:(_vm.isDragging),expression:"isDragging"}],staticClass:"vue-grid-placeholder",attrs:{"x":_vm.placeholder.x,"y":_vm.placeholder.y,"w":_vm.placeholder.w,"h":_vm.placeholder.h,"i":_vm.placeholder.i}})],2)}
+var GridLayoutvue_type_template_id_8689b44c_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/GridLayout.vue?vue&type=template&id=4f9e3605&
+// CONCATENATED MODULE: ./src/components/GridLayout.vue?vue&type=template&id=8689b44c&
 
 // CONCATENATED MODULE: ./src/helpers/responsiveUtils.js
 
@@ -6971,6 +6971,11 @@ var elementResizeDetectorMaker = __webpack_require__("eec4");
           xxs: 2
         };
       }
+    },
+    containerHeightSize: {
+      type: Number,
+      required: false,
+      default: 200
     }
   },
   data: function data() {
@@ -7125,7 +7130,7 @@ var elementResizeDetectorMaker = __webpack_require__("eec4");
     },
     containerHeight: function containerHeight() {
       if (!this.autoSize) return;
-      return bottom(this.layout) * (this.rowHeight + this.margin[1]) + this.margin[1] + 'px';
+      return bottom(this.layout) * (this.rowHeight + this.margin[1]) + (this.containerHeightSize * 2 + this.margin[1]) + this.margin[1] + 'px';
     },
     dragEvent: function dragEvent(eventName, id, x, y, h, w) {
       //console.log(eventName + " id=" + id + ", x=" + x + ", y=" + y);
@@ -7174,7 +7179,11 @@ var elementResizeDetectorMaker = __webpack_require__("eec4");
 
       this.eventBus.$emit("compact");
       this.updateHeight();
-      if (eventName === 'dragend') this.$emit('layout-updated', this.layout);
+
+      if (eventName === 'dragend') {
+        //window.scrollTo(0, this.cursorYAxis);
+        this.$emit('layout-updated', this.layout);
+      }
     },
     resizeEvent: function resizeEvent(eventName, id, x, y, h, w) {
       if (eventName === "resizestart" || eventName === "resizemove") {
@@ -7266,8 +7275,8 @@ var GridLayoutvue_type_style_index_0_lang_css_ = __webpack_require__("e279");
 
 var GridLayout_component = normalizeComponent(
   components_GridLayoutvue_type_script_lang_js_,
-  GridLayoutvue_type_template_id_4f9e3605_render,
-  GridLayoutvue_type_template_id_4f9e3605_staticRenderFns,
+  GridLayoutvue_type_template_id_8689b44c_render,
+  GridLayoutvue_type_template_id_8689b44c_staticRenderFns,
   false,
   null,
   null,
