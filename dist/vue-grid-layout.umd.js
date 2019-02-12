@@ -1193,18 +1193,6 @@ module.exports = function (it) {
 
 /***/ }),
 
-/***/ "3846":
-/***/ (function(module, exports, __webpack_require__) {
-
-// 21.2.5.3 get RegExp.prototype.flags()
-if (__webpack_require__("9e1e") && /./g.flags != 'g') __webpack_require__("86cc").f(RegExp.prototype, 'flags', {
-  configurable: true,
-  get: __webpack_require__("0bfb")
-});
-
-
-/***/ }),
-
 /***/ "38fd":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -2238,39 +2226,6 @@ var toString = {}.toString;
 module.exports = function (it) {
   return toString.call(it).slice(8, -1);
 };
-
-
-/***/ }),
-
-/***/ "6b54":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-__webpack_require__("3846");
-var anObject = __webpack_require__("cb7c");
-var $flags = __webpack_require__("0bfb");
-var DESCRIPTORS = __webpack_require__("9e1e");
-var TO_STRING = 'toString';
-var $toString = /./[TO_STRING];
-
-var define = function (fn) {
-  __webpack_require__("2aba")(RegExp.prototype, TO_STRING, fn, true);
-};
-
-// 21.2.5.14 RegExp.prototype.toString()
-if (__webpack_require__("79e5")(function () { return $toString.call({ source: 'a', flags: 'b' }) != '/a/b'; })) {
-  define(function toString() {
-    var R = anObject(this);
-    return '/'.concat(R.source, '/',
-      'flags' in R ? R.flags : !DESCRIPTORS && R instanceof RegExp ? $flags.call(R) : undefined);
-  });
-// FF44- RegExp#toString has a wrong name
-} else if ($toString.name != TO_STRING) {
-  define(function toString() {
-    return $toString.call(this);
-  });
-}
 
 
 /***/ }),
@@ -4778,15 +4733,12 @@ var web_dom_iterable = __webpack_require__("ac6a");
 var external_commonjs_vue_commonjs2_vue_root_Vue_ = __webpack_require__("8bbf");
 var external_commonjs_vue_commonjs2_vue_root_Vue_default = /*#__PURE__*/__webpack_require__.n(external_commonjs_vue_commonjs2_vue_root_Vue_);
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules//.cache//vue-loader","cacheIdentifier":"ac0f68fa-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/GridItem.vue?vue&type=template&id=06d553fa&
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{ref:"item",staticClass:"vue-grid-item",class:{ 'vue-resizable' : _vm.resizable, 'resizing' : _vm.isResizing, 'vue-draggable-dragging' : _vm.isDragging, 'cssTransforms' : _vm.useCssTransforms, 'render-rtl' : _vm.renderRtl, 'disable-userselect': _vm.isDragging, 'no-touch': _vm.isAndroid },style:(_vm.style)},[_vm._t("default"),(_vm.resizable)?_c('span',{ref:"handle",class:_vm.resizableHandleClass}):_vm._e()],2)}
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules//.cache//vue-loader","cacheIdentifier":"ac0f68fa-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/GridItem.vue?vue&type=template&id=125964a2&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{ref:"item",staticClass:"vue-grid-item",class:{'vue-resizable' : _vm.resizable, 'resizing' : _vm.isResizing, 'vue-draggable-dragging' : _vm.isDragging, 'cssTransforms' : _vm.useCssTransforms, 'render-rtl' : _vm.renderRtl, 'disable-userselect': _vm.isDragging, 'no-touch': _vm.isAndroid },style:(_vm.style)},[_vm._t("default"),(_vm.resizable)?_c('span',{ref:"handle",class:_vm.resizableHandleClass}):_vm._e()],2)}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/GridItem.vue?vue&type=template&id=06d553fa&
-
-// EXTERNAL MODULE: ./node_modules/core-js/modules/es6.regexp.to-string.js
-var es6_regexp_to_string = __webpack_require__("6b54");
+// CONCATENATED MODULE: ./src/components/GridItem.vue?vue&type=template&id=125964a2&
 
 // EXTERNAL MODULE: ./node_modules/@babel/runtime-corejs2/core-js/parse-int.js
 var parse_int = __webpack_require__("e814");
@@ -5630,7 +5582,7 @@ function removeWindowEventListener(event
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/GridItem.vue?vue&type=script&lang=js&
 
 
-
+//
 //
 //
 //
@@ -5728,26 +5680,26 @@ var interact = __webpack_require__("fb3a");
   name: "GridItem",
   props: {
     /*cols: {
-     type: Number,
-     required: true
-     },*/
+             type: Number,
+             required: true
+             },*/
 
     /*containerWidth: {
-     type: Number,
-     required: true
-      },
-     rowHeight: {
-     type: Number,
-     required: true
-     },
-     margin: {
-     type: Array,
-     required: true
-     },
-     maxRows: {
-     type: Number,
-     required: true
-     },*/
+             type: Number,
+             required: true
+               },
+             rowHeight: {
+             type: Number,
+             required: true
+             },
+             margin: {
+             type: Array,
+             required: true
+             },
+             maxRows: {
+             type: Number,
+             required: true
+             },*/
     isDraggable: {
       type: Boolean,
       required: false,
@@ -5760,15 +5712,15 @@ var interact = __webpack_require__("fb3a");
     },
 
     /*useCssTransforms: {
-     type: Boolean,
-     required: true
-     },
-     static: {
-     type: Boolean,
-     required: false,
-     default: false
-     },
-     */
+             type: Boolean,
+             required: true
+             },
+             static: {
+             type: Boolean,
+             required: false,
+             default: false
+             },
+             */
     minH: {
       type: Number,
       required: false,
@@ -5811,7 +5763,7 @@ var interact = __webpack_require__("fb3a");
     dragIgnoreFrom: {
       type: String,
       required: false,
-      default: 'a, button'
+      default: "a, button"
     },
     dragAllowFrom: {
       type: String,
@@ -5821,24 +5773,12 @@ var interact = __webpack_require__("fb3a");
     resizeIgnoreFrom: {
       type: String,
       required: false,
-      default: 'a, button'
-    },
-    leftRightMoveSize: {
-      type: Number,
-      required: false,
-      default: 110
-    },
-    topBottomMoveSize: {
-      type: Number,
-      required: false,
-      default: 70
+      default: "a, button"
     }
   },
   inject: ["eventBus"],
   data: function data() {
     return {
-      counter: 0,
-      moveDirection: String,
       cols: 1,
       containerWidth: 100,
       rowHeight: 30,
@@ -5899,7 +5839,7 @@ var interact = __webpack_require__("fb3a");
     };
 
     self.directionchangeHandler = function () {
-      _this.rtl = getDocumentDir() === 'rtl';
+      _this.rtl = getDocumentDir() === "rtl";
 
       _this.compact();
     };
@@ -5908,25 +5848,25 @@ var interact = __webpack_require__("fb3a");
       self.cols = parse_int_default()(colNum);
     };
 
-    this.eventBus.$on('updateWidth', self.updateWidthHandler);
-    this.eventBus.$on('compact', self.compactHandler);
-    this.eventBus.$on('setDraggable', self.setDraggableHandler);
-    this.eventBus.$on('setResizable', self.setResizableHandler);
-    this.eventBus.$on('setRowHeight', self.setRowHeightHandler);
-    this.eventBus.$on('directionchange', self.directionchangeHandler);
-    this.eventBus.$on('setColNum', self.setColNum);
-    this.rtl = getDocumentDir() === 'rtl';
+    this.eventBus.$on("updateWidth", self.updateWidthHandler);
+    this.eventBus.$on("compact", self.compactHandler);
+    this.eventBus.$on("setDraggable", self.setDraggableHandler);
+    this.eventBus.$on("setResizable", self.setResizableHandler);
+    this.eventBus.$on("setRowHeight", self.setRowHeightHandler);
+    this.eventBus.$on("directionchange", self.directionchangeHandler);
+    this.eventBus.$on("setColNum", self.setColNum);
+    this.rtl = getDocumentDir() === "rtl";
   },
   beforeDestroy: function beforeDestroy() {
     var self = this; //Remove listeners
 
-    this.eventBus.$off('updateWidth', self.updateWidthHandler);
-    this.eventBus.$off('compact', self.compactHandler);
-    this.eventBus.$off('setDraggable', self.setDraggableHandler);
-    this.eventBus.$off('setResizable', self.setResizableHandler);
-    this.eventBus.$off('setRowHeight', self.setRowHeightHandler);
-    this.eventBus.$off('directionchange', self.directionchangeHandler);
-    this.eventBus.$off('setColNum', self.setColNum);
+    this.eventBus.$off("updateWidth", self.updateWidthHandler);
+    this.eventBus.$off("compact", self.compactHandler);
+    this.eventBus.$off("setDraggable", self.setDraggableHandler);
+    this.eventBus.$off("setResizable", self.setResizableHandler);
+    this.eventBus.$off("setRowHeight", self.setRowHeightHandler);
+    this.eventBus.$off("directionchange", self.directionchangeHandler);
+    this.eventBus.$off("setColNum", self.setColNum);
     this.interactObj.unset(); // destroy interact intance
   },
   mounted: function mounted() {
@@ -5949,7 +5889,11 @@ var interact = __webpack_require__("fb3a");
     }
 
     this.useCssTransforms = this.$parent.useCssTransforms;
-    this.createStyle(1);
+    this.createStyle();
+    this.$el.setAttribute("data-col-size", this.w);
+    this.$el.setAttribute("data-row-size", this.h);
+    this.$el.setAttribute("data-row", this.y + 1);
+    this.$el.setAttribute("data-col", this.x + 1);
   },
   watch: {
     isDraggable: function isDraggable() {
@@ -5963,42 +5907,21 @@ var interact = __webpack_require__("fb3a");
       }
 
       if (this.draggable) {
-        var gridTarget = interact.createSnapGrid({});
         var opts = {
           ignoreFrom: this.dragIgnoreFrom,
-          allowFrom: this.dragAllowFrom,
-          autoScroll: {
-            margin: this.scrollDistance,
-            speed: this.scrollSpeed
-          },
-          snap: {
-            targets: [gridTarget],
-            offset: {
-              x: 100,
-              y: 100
-            },
-            range: 50
-          },
-          inertia: {
-            resistance: 100,
-            minSpeed: 800,
-            endSpeed: 500,
-            smoothEndDuration: 0
-          },
-          squareResize: true
+          allowFrom: this.dragAllowFrom
         };
         this.interactObj.draggable(opts);
         /*this.interactObj.draggable({allowFrom: '.vue-draggable-handle'});*/
 
         if (!this.dragEventSet) {
           this.dragEventSet = true;
-          this.interactObj.on('dragstart dragmove dragend', function (event) {
+          this.interactObj.on("dragstart dragmove dragend", function (event) {
             self.handleDrag(event);
           });
         }
       } else {
         this.interactObj.draggable({
-          squareResize: true,
           enabled: false
         });
       }
@@ -6018,8 +5941,7 @@ var interact = __webpack_require__("fb3a");
     },
     containerWidth: function containerWidth() {
       this.tryMakeResizable();
-      this.createStyle(this.counter);
-      this.counter = 4;
+      this.createStyle();
     },
     x: function x(newVal) {
       this.innerX = newVal;
@@ -6052,16 +5974,14 @@ var interact = __webpack_require__("fb3a");
     },
     resizableHandleClass: function resizableHandleClass() {
       if (this.renderRtl) {
-        return 'vue-resizable-handle vue-rtl-resizable-handle';
+        return "vue-resizable-handle vue-rtl-resizable-handle";
       } else {
-        return 'vue-resizable-handle';
+        return "vue-resizable-handle";
       }
     }
   },
   methods: {
     createStyle: function createStyle() {
-      var val = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : -1;
-
       if (this.x + this.w > this.cols) {
         this.innerX = 0;
         this.innerW = this.w > this.cols ? this.cols : this.w;
@@ -6070,24 +5990,7 @@ var interact = __webpack_require__("fb3a");
         this.innerW = this.w;
       }
 
-      var placeholderElement = false;
-
-      if (this.$el.className.toString().indexOf("placeholder") > -1) {
-        placeholderElement = true;
-      } //console.log(val);
-
-
-      var pos = this.calcPosition(this.innerX, this.innerY, this.innerW, this.innerH, originalWidth, placeholderElement ? 0 : 0);
-      var originalWidth = 0;
-
-      if (val == 4 && !placeholderElement) {
-        //console.log(pos);
-        originalWidth = this.$el.getAttribute("data-mw");
-
-        if (originalWidth == null) {
-          this.$el.setAttribute('data-mw', pos.width);
-        }
-      }
+      var pos = this.calcPosition(this.innerX, this.innerY, this.innerW, this.innerH);
 
       if (this.isDragging) {
         pos.top = this.dragging.top; //                    Add rtl support
@@ -6109,24 +6012,23 @@ var interact = __webpack_require__("fb3a");
       if (this.useCssTransforms) {
         //                    Add rtl support
         if (this.renderRtl) {
-          style = setTransformRtl(pos.top, pos.right, pos.width, pos.height, val == 4 && !placeholderElement && originalWidth > 50 ? originalWidth : pos.width);
+          style = setTransformRtl(pos.top, pos.right, pos.width, pos.height);
         } else {
-          style = setTransform(pos.top, placeholderElement ? pos.left : pos.left, pos.width, pos.height, val == 4 && !placeholderElement && originalWidth > 50 ? originalWidth : pos.width);
+          style = setTransform(pos.top, pos.left, pos.width, pos.height);
         }
       } else {
         // top,left (slow)
         //                    Add rtl support
         if (this.renderRtl) {
-          style = setTopRight(pos.top, placeholderElement ? pos.right : pos.right, pos.width, pos.height, val == 4 && !placeholderElement && originalWidth > 50 ? originalWidth : pos.width);
+          style = setTopRight(pos.top, pos.right, pos.width, pos.height);
         } else {
-          style = setTopLeft(pos.top, pos.left, pos.width, pos.height, val == 4 && !placeholderElement && originalWidth > 50 ? originalWidth : pos.width);
+          style = setTopLeft(pos.top, pos.left, pos.width, pos.height);
         }
       }
 
       this.style = style;
     },
     handleResize: function handleResize(event) {
-      //console.log("resize");
       var position = getControlPosition(event); // Get the current drag point from the event. This is used as the offset.
 
       if (position == null) return; // not possible but satisfies flow
@@ -6223,7 +6125,6 @@ var interact = __webpack_require__("fb3a");
       this.eventBus.$emit("resizeEvent", event.type, this.i, this.innerX, this.innerY, pos.h, pos.w);
     },
     handleDrag: function handleDrag(event) {
-      //console.log("handleDrag");
       if (this.isResizing) return;
       var position = getControlPosition(event); // Get the current drag point from the event. This is used as the offset.
 
@@ -6283,51 +6184,6 @@ var interact = __webpack_require__("fb3a");
 
         case "dragmove":
           {
-            var rightLeftDiff = parse_int_default()(x - this.lastX);
-
-            var bottomTopDiff = parse_int_default()(y - this.lastY);
-
-            if (rightLeftDiff > 0) {
-              this.moveDirection = "right"; //console.log("right");
-            } else if (rightLeftDiff < 0) {
-              this.moveDirection = "left"; //console.log("LEFT!?");
-            }
-
-            if (bottomTopDiff > 0) {
-              this.moveDirection = "bottom"; //console.log("bottom");
-            } else if (bottomTopDiff < 0) {
-              this.moveDirection = "top"; //console.log("TOP!?");
-            } // if (rightLeftDiff > bottomTopDiff && (rightLeftDiff > 0 || bottomTopDiff > 0))
-            // {
-            //     this.moveDirection = "left or right"
-            // } else if (bottomTopDiff > rightLeftDiff && (rightLeftDiff > 0 || bottomTopDiff > 0)) {
-            //     this.moveDirection = "top or bottom"
-            // } else {
-            //     this.moveDirection = "";
-            // }
-            // if (this.moveDirection.length > 0)
-            //     console.log(this.moveDirection);
-            // if (this.moveDirection == "left or right")
-            // {
-            //     if (this.lastX > x)
-            //     {
-            //         this.moveDirection = "left"
-            //     } else {
-            //         this.moveDirection = "right";
-            //     }
-            // } else if (this.moveDirection == "top or bottom")
-            // {
-            //     if (this.lastY > y)
-            //     {
-            //         this.moveDirection = "top";
-            //     } else {
-            //         this.moveDirection = "bottom";
-            //     }
-            // }
-            // if (this.moveDirection.length > 0)
-            //     console.log(this.moveDirection);
-
-
             var coreEvent = createCoreData(this.lastX, this.lastY, x, y); //                        Add rtl support
 
             if (this.renderRtl) {
@@ -6340,14 +6196,7 @@ var interact = __webpack_require__("fb3a");
             //                        console.log("### drag => " + event.type + ", deltaX=" + coreEvent.deltaX + ", deltaY=" + coreEvent.deltaY);
             //                        console.log("### drag end => " + JSON.stringify(newPosition));
 
-            this.dragging = newPosition; //console.log("Dragging top:" + this.dragging.top + ", Scrollbar:" + document.documentElement.scrollTop);
-
-            if (newPosition.top > this.rowHeight) {//window.scrollBy(0,(newPosition.top-this.rowHeight+60));
-              //console.log("scroll by: " + (newPosition.top-this.rowHeight+60))
-              //console.log("scrolldown:" +  (this.dragging.top-(document.documentElement.scrollTop+this.rowHeight)))
-              //window.scrollBy(0,(this.dragging.top-(document.documentElement.scrollTop+this.rowHeight)))
-            }
-
+            this.dragging = newPosition;
             break;
           }
       } // Get new XY
@@ -6366,16 +6215,19 @@ var interact = __webpack_require__("fb3a");
 
       if (this.innerX !== pos.x || this.innerY !== pos.y) {
         this.$emit("move", this.i, pos.x, pos.y);
+        this.$el.setAttribute("data-row", this.y + 1);
+        this.$el.setAttribute("data-col", this.x + 1);
       }
 
       if (event.type === "dragend" && (this.previousX !== this.innerX || this.previousY !== this.innerY)) {
         this.$emit("moved", this.i, pos.x, pos.y);
+        this.$el.setAttribute("data-row", this.y + 1);
+        this.$el.setAttribute("data-col", this.x + 1);
       }
 
       this.eventBus.$emit("dragEvent", event.type, this.i, pos.x, pos.y, this.innerH, this.innerW);
     },
-    calcPosition: function calcPosition(x, y, w, h, originalWidth) {
-      var addPadding = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : 0;
+    calcPosition: function calcPosition(x, y, w, h) {
       var colWidth = this.calcColWidth(); // add rtl support
 
       var out;
@@ -6388,22 +6240,18 @@ var interact = __webpack_require__("fb3a");
           // Fix this if it occurs.
           // Note we do it here rather than later because Math.round(Infinity) causes deopt
           width: w === Infinity ? w : Math.round(colWidth * w + Math.max(0, w - 1) * this.margin[0]),
-          height: h === Infinity ? h : Math.round(this.rowHeight * h + Math.max(0, h - 1) * this.margin[1]),
-          maxWidth: originalWidth,
-          minWidth: originalWidth
+          height: h === Infinity ? h : Math.round(this.rowHeight * h + Math.max(0, h - 1) * this.margin[1])
         };
       } else {
         out = {
-          left: Math.round(colWidth * x + (x + 1) * this.margin[0] + addPadding),
+          left: Math.round(colWidth * x + (x + 1) * this.margin[0]),
           top: Math.round(this.rowHeight * y + (y + 1) * this.margin[1]),
           // 0 * Infinity === NaN, which causes problems with resize constriants;
           // Fix this if it occurs.
           // Note we do it here rather than later because Math.round(Infinity) causes deopt
           width: w === Infinity ? w : Math.round(colWidth * w + Math.max(0, w - 1) * this.margin[0]),
-          height: h === Infinity ? h : Math.round(this.rowHeight * h + Math.max(0, h - 1) * this.margin[1]),
-          maxWidth: originalWidth,
-          minWidth: originalWidth
-        }; //console.log("calcPosition:" + out.left + "," + out.top + "," + out.width + "," + out.height);
+          height: h === Infinity ? h : Math.round(this.rowHeight * h + Math.max(0, h - 1) * this.margin[1])
+        };
       }
 
       return out;
@@ -6417,9 +6265,7 @@ var interact = __webpack_require__("fb3a");
      */
     // TODO check if this function needs change in order to support rtl.
     calcXY: function calcXY(top, left) {
-      var colWidth = this.calcColWidth(); // console.log("top:" + top);
-      // console.log("left:" + left);
-      // left = colWidth * x + margin * (x + 1)
+      var colWidth = this.calcColWidth(); // left = colWidth * x + margin * (x + 1)
       // l = cx + m(x+1)
       // l = cx + mx + m
       // l - m = cx + mx
@@ -6427,16 +6273,8 @@ var interact = __webpack_require__("fb3a");
       // (l - m) / (c + m) = x
       // x = (left - margin) / (coldWidth + margin)
 
-      var leftRightPadding = left;
-      var topBottomPadding = top;
-
-      if (this.moveDirection == "left" || this.moveDirection == "right") {
-        leftRightPadding = this.moveDirection == "right" ? left + this.leftRightMoveSize : left - this.leftRightMoveSize;
-      } else if (this.moveDirection == "top" || this.moveDirection == "bottom") topBottomPadding = this.moveDirection === "bottom" ? top + this.topBottomMoveSize : top - this.topBottomMoveSize;
-
-      var x = Math.round((leftRightPadding - this.margin[0]) / (colWidth + this.margin[0]));
-      var y = Math.round((topBottomPadding - this.margin[1]) / (this.rowHeight + this.margin[1])); //console.log(left + "," + this.margin[0] + "," + colWidth);
-      // Capping
+      var x = Math.round((left - this.margin[0]) / (colWidth + this.margin[0]));
+      var y = Math.round((top - this.margin[1]) / (this.rowHeight + this.margin[1])); // Capping
 
       x = Math.max(Math.min(x, this.cols - this.innerW), 0);
       y = Math.max(Math.min(y, this.maxRows - this.innerH), 0);
@@ -6447,7 +6285,7 @@ var interact = __webpack_require__("fb3a");
     },
     // Helper for generating column width
     calcColWidth: function calcColWidth() {
-      var colWidth = (this.containerWidth - this.margin[0] * (this.cols + 1)) / this.cols; //console.log("### COLS=" + this.cols + " COL WIDTH=" + colWidth + " MARGIN " + this.margin[0]);
+      var colWidth = (this.containerWidth - this.margin[0] * (this.cols + 1)) / this.cols; // console.log("### COLS=" + this.cols + " COL WIDTH=" + colWidth + " MARGIN " + this.margin[0]);
 
       return colWidth;
     },
@@ -6463,8 +6301,8 @@ var interact = __webpack_require__("fb3a");
       // ...
       // w = (width + margin) / (colWidth + margin)
 
-      var w = Math.round((width + this.margin[0]) / (colWidth + 0 + this.margin[0]));
-      var h = Math.round((height + this.margin[1]) / (this.rowHeight + 0 + this.margin[1])); // Capping
+      var w = Math.round((width + this.margin[0]) / (colWidth + this.margin[0]));
+      var h = Math.round((height + this.margin[1]) / (this.rowHeight + this.margin[1])); // Capping
 
       w = Math.max(Math.min(w, this.cols - this.innerX), 0);
       h = Math.max(Math.min(h, this.maxRows - this.innerY), 0);
@@ -6474,15 +6312,14 @@ var interact = __webpack_require__("fb3a");
       };
     },
     updateWidth: function updateWidth(width, colNum) {
-      this.containerWidth = width; //console.log("updateWidth:" + width + "," + colNum);
+      this.containerWidth = width;
 
       if (colNum !== undefined && colNum !== null) {
         this.cols = colNum;
       }
     },
     compact: function compact() {
-      if (this.counter == 0) this.counter == 3;
-      this.createStyle(this.counter);
+      this.createStyle();
     },
     tryMakeResizable: function tryMakeResizable() {
       var self = this;
@@ -6515,14 +6352,13 @@ var interact = __webpack_require__("fb3a");
               height: maximum.height,
               width: maximum.width
             }
-          },
-          squareResize: false
+          }
         };
         this.interactObj.resizable(opts);
 
         if (!this.resizeEventSet) {
           this.resizeEventSet = true;
-          this.interactObj.on('resizestart resizemove resizeend', function (event) {
+          this.interactObj.on("resizestart resizemove resizeend", function (event) {
             self.handleResize(event);
           });
         }
