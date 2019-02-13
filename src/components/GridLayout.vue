@@ -97,6 +97,11 @@
                 type: Object,
                 default: function(){return{ lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 }},
             },
+            containerHeightSize: {
+                type: Number,
+                required: false,
+                default: 200
+            }
         },
         data: function () {
             return {
@@ -114,6 +119,7 @@
                 layouts: {}, // array to store all layouts from different breakpoints
                 lastBreakpoint: null, // store last active breakpoint
                 originalLayout: null, // store original Layout
+                cursorYAxis: 0,
             };
         },
         created () {
@@ -158,16 +164,17 @@
 
                     self.updateHeight();
                     self.$nextTick(function () {
-                        const erd = elementResizeDetectorMaker({
+                        this.erd = elementResizeDetectorMaker({
                             strategy: "scroll" //<- For ultra performance.
                         });
-                        erd.listenTo(self.$refs.item, function () {
+                        this.erd.listenTo(self.$refs.item, function () {
                             self.onWindowResize();
                         });
                     });
                 });
 
-                addWindowEventListener("load", self.onWindowLoad.bind(this));
+                addWindowEventListener('mousemove', self.onMouseMove);
+                //addWindowEventListener("load", self.onWindowLoad.bind(this));
             });
         },
         watch: {
@@ -202,26 +209,6 @@
             }
         },
         methods: {
-            onWindowLoad: function(){
-                const self = this;
-
-                if (self.width === null) {
-                    self.onWindowResize();
-                    //self.width = self.$el.offsetWidth;
-                    addWindowEventListener('resize', self.onWindowResize);
-                }
-                compact(self.layout, self.verticalCompact);
-
-                self.updateHeight();
-                self.$nextTick(function () {
-                    const erd = elementResizeDetectorMaker({
-                        strategy: "scroll" //<- For ultra performance.
-                    });
-                    erd.listenTo(self.$refs.item, function () {
-                        self.onWindowResize();
-                    });
-                });
-            },
             layoutUpdate() {
                 if (this.layout !== undefined) {
                     if (this.layout.length !== this.originalLayout.length) {
@@ -255,6 +242,11 @@
                     height: this.containerHeight()
                 };
             },
+            onMouseMove: function(event) {
+                //console.log("mouse move")
+                //console.log(event.pageY);
+                this.cursorYAxis = event.pageY;
+            },
             onWindowResize: function () {
                 if (this.$refs !== null && this.$refs.item !== null && this.$refs.item !== undefined) {
                     this.width = this.$refs.item.offsetWidth;
@@ -263,11 +255,19 @@
             },
             containerHeight: function () {
                 if (!this.autoSize) return;
-                return bottom(this.layout) * (this.rowHeight + this.margin[1]) + this.margin[1] + 'px';
+                return bottom(this.layout) * (this.rowHeight + this.margin[1]) + ((this.containerHeightSize * 2)+ this.margin[1]) + this.margin[1] + 'px';
             },
             dragEvent: function (eventName, id, x, y, h, w) {
                 //console.log(eventName + " id=" + id + ", x=" + x + ", y=" + y);
+                ///console.log("placeholder:" + this.placeholder);
+
+                //console.log(this.placeholder.x)
+                //console.log(this.placeholder.y)
+                //console.log(this.placeholder.w)
+                //console.log(this.placeholder.h)
+
                 let l = getLayoutItem(this.layout, id);
+
                 //GetLayoutItem sometimes returns null object
                 if (l === undefined || l === null){
                     l = {x:0, y:0}
@@ -282,6 +282,7 @@
                     this.$nextTick(function() {
                         this.isDragging = true;
                     });
+                    
                     //this.$broadcast("updateWidth", this.width);
                     this.eventBus.$emit("updateWidth", this.width);
                 } else {
@@ -291,6 +292,14 @@
                 }
                 
                 // set layout element coordinates to dragged position
+
+                //console.log("x:" + x);
+                //console.log("y:" + y);
+
+                //console.log("Dragging...");
+                //console.log("Mouse:" + this.cursorYAxis);
+                //console.log("Scrollbar:" + document.documentElement.scrollTop);
+
                 l.x = x;
                 l.y = y;
                 // Move the element to the dragged location.
@@ -299,7 +308,10 @@
                 // needed because vue can't detect changes on array element properties
                 this.eventBus.$emit("compact");
                 this.updateHeight();
-                if (eventName === 'dragend') this.$emit('layout-updated', this.layout);
+                if (eventName === 'dragend') {
+                    //window.scrollTo(0, this.cursorYAxis);
+                    this.$emit('layout-updated', this.layout);
+                }
             },
             resizeEvent: function (eventName, id, x, y, h, w) {
                 if (eventName === "resizestart" || eventName === "resizemove") {

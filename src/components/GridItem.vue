@@ -316,8 +316,8 @@ export default {
 
     this.$el.setAttribute("data-col-size", this.w);
     this.$el.setAttribute("data-row-size", this.h);
-    this.$el.setAttribute("data-row", this.y);
-    this.$el.setAttribute("data-col", this.x);
+    this.$el.setAttribute("data-row", this.y + 1);
+    this.$el.setAttribute("data-col", this.x + 1);
   },
   watch: {
     isDraggable: function() {
@@ -640,16 +640,16 @@ export default {
 
       if (this.innerX !== pos.x || this.innerY !== pos.y) {
         this.$emit("move", this.i, pos.x, pos.y);
-        this.$el.setAttribute("data-row", this.y);
-        this.$el.setAttribute("data-col", this.x);
+        this.$el.setAttribute("data-row", this.y + 1);
+        this.$el.setAttribute("data-col", this.x + 1);
       }
       if (
         event.type === "dragend" &&
         (this.previousX !== this.innerX || this.previousY !== this.innerY)
       ) {
         this.$emit("moved", this.i, pos.x, pos.y);
-        this.$el.setAttribute("data-row", this.y);
-        this.$el.setAttribute("data-col", this.x);
+        this.$el.setAttribute("data-row", this.y + 1);
+        this.$el.setAttribute("data-col", this.x + 1);
       }
       this.eventBus.$emit(
         "dragEvent",
