@@ -4761,12 +4761,24 @@ var assign_default = /*#__PURE__*/__webpack_require__.n(object_assign);
 
 // @flow
 
-/*:: export type LayoutItemRequired = {w: number, h: number, x: number, y: number, i: string};*/
+/*:: export type LayoutItemRequired = {
+  w: number,
+  h: number,
+  x: number,
+  y: number,
+  i: string
+};*/
 
-/*:: export type LayoutItem = LayoutItemRequired &
-                         {minW?: number, minH?: number, maxW?: number, maxH?: number,
-                          moved?: boolean, static?: boolean,
-                          isDraggable?: ?boolean, isResizable?: ?boolean};*/
+/*:: export type LayoutItem = LayoutItemRequired & {
+  minW ? : number,
+  minH ? : number,
+  maxW ? : number,
+  maxH ? : number,
+  moved ? : boolean,
+  static ? : boolean,
+  isDraggable ? : ? boolean,
+  isResizable ? : ? boolean
+};*/
 
 // export type Position = {left: number, top: number, width: number, height: number};
 
@@ -4780,7 +4792,7 @@ export type DragCallbackData = {
 */
 // export type DragEvent = {e: Event} & DragCallbackData;
 
-/*:: export type Layout = Array<LayoutItem>;*/
+/*:: export type Layout = Array < LayoutItem > ;*/
 
 // export type ResizeEvent = {e: Event, node: HTMLElement, size: Size};
 // const isProduction = process.env.NODE_ENV === 'production';
@@ -4792,7 +4804,10 @@ export type DragCallbackData = {
  * @return {Number}       Bottom coordinate.
  */
 
-/*:: export type Size = {width: number, height: number};*/
+/*:: export type Size = {
+  width: number,
+  height: number
+};*/
 
 function bottom(layout
 /*: Layout*/
@@ -4943,7 +4958,9 @@ function compactItem(compareWith
 function correctBounds(layout
 /*: Layout*/
 , bounds
-/*: {cols: number}*/
+/*: {
+  cols: number
+}*/
 )
 /*: Layout*/
 {
@@ -4983,7 +5000,7 @@ function getLayoutItem(layout
 , id
 /*: string*/
 )
-/*: ?LayoutItem*/
+/*: ? LayoutItem*/
 {
   for (var i = 0, len = layout.length; i < len; i++) {
     if (layout[i].i === id) return layout[i];
@@ -5003,7 +5020,7 @@ function getFirstCollision(layout
 , layoutItem
 /*: LayoutItem*/
 )
-/*: ?LayoutItem*/
+/*: ? LayoutItem*/
 {
   for (var i = 0, len = layout.length; i < len; i++) {
     if (collides(layout[i], layoutItem)) return layout[i];
@@ -5014,7 +5031,7 @@ function getAllCollisions(layout
 , layoutItem
 /*: LayoutItem*/
 )
-/*: Array<LayoutItem>*/
+/*: Array < LayoutItem >*/
 {
   return layout.filter(function (l) {
     return collides(l, layoutItem);
@@ -5029,7 +5046,7 @@ function getAllCollisions(layout
 function getStatics(layout
 /*: Layout*/
 )
-/*: Array<LayoutItem>*/
+/*: Array < LayoutItem >*/
 {
   //return [];
   return layout.filter(function (l) {
@@ -5110,7 +5127,7 @@ function moveElementAwayFromCollision(layout
 , itemToMove
 /*: LayoutItem*/
 , isUserAction
-/*: ?boolean*/
+/*: ? boolean*/
 )
 /*: Layout*/
 {
@@ -5358,7 +5375,7 @@ function validateLayout(layout
 function autoBindHandlers(el
 /*: Object*/
 , fns
-/*: Array<string>*/
+/*: Array < string >*/
 )
 /*: void*/
 {
