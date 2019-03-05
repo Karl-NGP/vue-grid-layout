@@ -367,10 +367,36 @@ export default {
     x: function(newVal) {
       this.innerX = newVal;
       this.createStyle();
+
+      this.$el.setAttribute("data-row", this.innerY + 1);
+      this.$el.setAttribute("data-col", newVal + 1);
+
+      this.eventBus.$emit(
+        "dragEvent",
+        "dragend",
+        this.i,
+        newVal,
+        this.innerY,
+        this.innerH,
+        this.innerW
+      );
     },
     y: function(newVal) {
       this.innerY = newVal;
       this.createStyle();
+
+      this.$el.setAttribute("data-row", newVal + 1);
+      this.$el.setAttribute("data-col", this.innerX + 1);
+
+      this.eventBus.$emit(
+        "dragEvent",
+        "dragend",
+        this.i,
+        this.innerX,
+        newVal,
+        this.innerH,
+        this.innerW
+      );
     },
     h: function(newVal) {
       this.innerH = newVal;
