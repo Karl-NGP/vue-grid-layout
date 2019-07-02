@@ -24,6 +24,7 @@
                     :responsive="false"
             >
                 <grid-item v-for="item in layout" :key="item.i"
+                           :static="item.static"
                            :x="item.x"
                            :y="item.y"
                            :w="item.w"
@@ -47,8 +48,8 @@
     //var eventBus = require('./eventBus');
 
     let testLayout = [
-        {"x":0,"y":0,"w":1,"h":1,"i":"0"},
-        {"x":2,"y":0,"w":1,"h":1,"i":"2"},
+        {"x":0,"y":0,"w":1,"h":1,"i":"0", static: true},
+        {"x":2,"y":0,"w":1,"h":1,"i":"2", static: false},
         // {"x":0,"y":1,"w":2,"h":1,"i":"1"},
         // {"x":0,"y":2,"w":1,"h":1,"i":"3"},
         // {"x":0,"y":3,"w":1,"h":1,"i":"4"},
